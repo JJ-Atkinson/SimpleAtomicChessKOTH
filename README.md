@@ -1,4 +1,7 @@
-SimpleChess
+SimpleAntichess
+
 ===========
 
-Chess for KOTH-challenge
+Based on https://github.com/CommonGuy/SimpleChess/
+
+Antichess for KOTH-challenge
