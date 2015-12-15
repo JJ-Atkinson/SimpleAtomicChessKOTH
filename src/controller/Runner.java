@@ -5,7 +5,7 @@ import java.util.Map;
 
 import player.*;
 
-public class Controller {
+public class Runner {
     public static final int WIN_POINTS = 3;
     public static final int DRAW_POINTS = 1;
     public static final int LOSE_POINTS = 0;
@@ -14,16 +14,16 @@ public class Controller {
     private final Map<Class<? extends Player>, Integer> scores = new HashMap<>();
 
     public static void main(String... args) {
-        new Controller().generateResult();
+        new Runner().runGames();
     }
 
-    public Controller() {
+    public Runner() {
         for (Class player : classes) {
             scores.put(player, 0);
         }
     }
 
-    private void generateResult() {
+    public void runGames() {
 
         for (int i = 0; i < classes.length - 1; i++) {
             for (int j = i + 1; j < classes.length; j++) {
