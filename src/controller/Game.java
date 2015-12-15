@@ -28,11 +28,11 @@ public class Game {
             }
         }
         if (loses(players[0]) && !loses(players[1])) {
-            return Controller.LOSE_POINTS;
+            return Runner.LOSE_POINTS;
         } else if (loses(players[1]) && !loses(players[0])) {
-            return Controller.WIN_POINTS;
+            return Runner.WIN_POINTS;
         } else {
-            return Controller.DRAW_POINTS;
+            return Runner.DRAW_POINTS;
         }
     }
 
