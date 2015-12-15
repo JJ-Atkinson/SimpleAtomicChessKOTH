@@ -8,19 +8,19 @@ import controller.*;
 
 public class TestPlayer extends Player {
 
-	@Override
-	public Move getMove(Board board, Player enemy) {
-		List<Move> possibleMoves = new ArrayList<>();
-		List<Piece> pieces = this.getPieces(board);
-		
-		for (Piece piece : pieces) {
-			for (Point p : piece.getValidDestinationSet(board)) {
-				possibleMoves.add(new Move(piece, p));
-			}
-		}
-		
-		int rnd = new Random().nextInt(possibleMoves.size());
-		return possibleMoves.get(rnd);
-	}
+    @Override
+    public Move getMove(Board board, Player enemy) {
+        List<Move> possibleMoves = new ArrayList<>();
+        List<Piece> pieces = this.getPieces(board);
+
+        for (Piece piece : pieces) {
+            for (Point p : piece.getValidDestinationSet(board)) {
+                possibleMoves.add(new Move(piece, p));
+            }
+        }
+
+        int rnd = new Random().nextInt(possibleMoves.size());
+        return possibleMoves.get(rnd);
+    }
 
 }
