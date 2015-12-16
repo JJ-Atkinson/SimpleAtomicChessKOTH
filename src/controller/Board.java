@@ -63,23 +63,23 @@ public class Board {
             }
         }
 
-        fields[0][0].setPiece(new Rook(Color.WHITE, new Location(0, 0)));
-        fields[1][0].setPiece(new Knight(Color.WHITE, new Location(1, 0)));
-        fields[2][0].setPiece(new Bishop(Color.WHITE, new Location(2, 0)));
-        fields[3][0].setPiece(new Queen(Color.WHITE, new Location(3, 0)));
-        fields[4][0].setPiece(new King(Color.WHITE, new Location(4, 0)));
-        fields[5][0].setPiece(new Bishop(Color.WHITE, new Location(5, 0)));
-        fields[6][0].setPiece(new Knight(Color.WHITE, new Location(6, 0)));
-        fields[7][0].setPiece(new Rook(Color.WHITE, new Location(7, 0)));
+        fields[0][0].setPiece(new Rook   (Color.WHITE, new Location(0, 0)));
+        fields[1][0].setPiece(new Knight (Color.WHITE, new Location(1, 0)));
+        fields[2][0].setPiece(new Bishop (Color.WHITE, new Location(2, 0)));
+        fields[3][0].setPiece(new Queen  (Color.WHITE, new Location(3, 0)));
+        fields[4][0].setPiece(new King   (Color.WHITE, new Location(4, 0)));
+        fields[5][0].setPiece(new Bishop (Color.WHITE, new Location(5, 0)));
+        fields[6][0].setPiece(new Knight (Color.WHITE, new Location(6, 0)));
+        fields[7][0].setPiece(new Rook   (Color.WHITE, new Location(7, 0)));
 
-        fields[0][7].setPiece(new Rook(Color.BLACK, new Location(0, 7)));
-        fields[1][7].setPiece(new Knight(Color.BLACK, new Location(1, 7)));
-        fields[2][7].setPiece(new Bishop(Color.BLACK, new Location(2, 7)));
-        fields[3][7].setPiece(new Queen(Color.BLACK, new Location(3, 7)));
-        fields[4][7].setPiece(new King(Color.BLACK, new Location(4, 7)));
-        fields[5][7].setPiece(new Bishop(Color.BLACK, new Location(5, 7)));
-        fields[6][7].setPiece(new Knight(Color.BLACK, new Location(6, 7)));
-        fields[7][7].setPiece(new Rook(Color.BLACK, new Location(7, 7)));
+        fields[0][7].setPiece(new Rook   (Color.BLACK, new Location(0, 7)));
+        fields[1][7].setPiece(new Knight (Color.BLACK, new Location(1, 7)));
+        fields[2][7].setPiece(new Bishop (Color.BLACK, new Location(2, 7)));
+        fields[3][7].setPiece(new Queen  (Color.BLACK, new Location(3, 7)));
+        fields[4][7].setPiece(new King   (Color.BLACK, new Location(4, 7)));
+        fields[5][7].setPiece(new Bishop (Color.BLACK, new Location(5, 7)));
+        fields[6][7].setPiece(new Knight (Color.BLACK, new Location(6, 7)));
+        fields[7][7].setPiece(new Rook   (Color.BLACK, new Location(7, 7)));
 
         //pawns
         for (int i = 0; i < BOARD_LENGTH; i++) {

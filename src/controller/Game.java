@@ -51,8 +51,6 @@ public class Game {
     }
 
     private void makeTurn(Player player, Player enemy) {
-        player.setCheck(board.isCheck(player, enemy));
-        enemy.setCheck(board.isCheck(enemy, player));
         try {
             long start = System.currentTimeMillis();
 
