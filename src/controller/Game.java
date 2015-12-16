@@ -37,10 +37,7 @@ public class Game {
     }
 
     private boolean loses(Player player) {
-        if (player.isDisqualified() || board.getKing(player) == null) {
-            return true;
-        }
-        return false;
+        return player.isDisqualified() || player.getPieces(board).isEmpty() == false;
     }
 
     // player can make a turn

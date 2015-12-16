@@ -7,18 +7,18 @@ import java.util.HashSet;
 
 public class Knight extends Piece {
 
-    public Knight(Color team, Point pos) {
+    public Knight(Color team, Location pos) {
         super(team, pos, PieceType.KNIGHT);
     }
 
     @Override
-    public Set<Point> getValidDestinationSet(Board board) {
-        Set<Point> dests = new HashSet<>();
+    public Set<Location> getValidDestinationSet(Board board) {
+        Set<Location> dests = new HashSet<>();
         Field[][] fields = board.getFields();
-        Point pos = getPos();
+        Location pos = getPos();
         Color enemy = getTeam().opposite();
 
-        Set<Point> futurePositions = new HashSet<>();
+        Set<Location> futurePositions = new HashSet<>();
         futurePositions.add(pos.add(2, 1));
         futurePositions.add(pos.add(2, -1));
         futurePositions.add(pos.add(-2, 1));
@@ -28,7 +28,7 @@ public class Knight extends Piece {
         futurePositions.add(pos.add(1, -2));
         futurePositions.add(pos.add(-1, -2));
 
-        for (Point futurePos : futurePositions) {
+        for (Location futurePos : futurePositions) {
             if (!futurePos.isOutside()) {
                 Field field = fields[futurePos.getX()][futurePos.getY()];
                 if (!field.hasPiece() || field.getPiece().getTeam() == enemy) {

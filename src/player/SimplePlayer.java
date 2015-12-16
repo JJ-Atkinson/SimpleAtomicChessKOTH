@@ -6,7 +6,7 @@ import controller.Board;
 import controller.Move;
 import controller.Piece;
 import controller.Player;
-import controller.Point;
+import controller.Location;
 
 public class SimplePlayer extends Player {
 
@@ -15,7 +15,7 @@ public class SimplePlayer extends Player {
         //get all pieces of this player
         List<Piece> pieces = this.getPieces(board);
         for (Piece piece : pieces) {
-            Point[] destinations = piece.getValidDestinations(board);
+            Location[] destinations = piece.getValidDestinations(board);
             if (destinations.length > 0) {
                 return new Move(piece, destinations[0]);
             }

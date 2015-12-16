@@ -14,7 +14,7 @@ public class TestPlayer extends Player {
         List<Piece> pieces = this.getPieces(board);
 
         for (Piece piece : pieces) {
-            for (Point p : piece.getValidDestinationSet(board)) {
+            for (Location p : piece.getValidDestinationSet(board)) {
                 possibleMoves.add(new Move(piece, p));
             }
         }

@@ -7,13 +7,13 @@ import java.util.HashSet;
 
 public class Rook extends Piece {
 
-    public Rook(Color team, Point pos) {
+    public Rook(Color team, Location pos) {
         super(team, pos, PieceType.ROOK);
     }
 
     @Override
-    public Set<Point> getValidDestinationSet(Board board) {
-        Set<Point> dests = new HashSet<>();
+    public Set<Location> getValidDestinationSet(Board board) {
+        Set<Location> dests = new HashSet<>();
         Field[][] fields = board.getFields();
 
         //horizontal fields

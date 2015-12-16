@@ -2,9 +2,9 @@ package controller;
 
 public class Move {
     private Piece piece;
-    private Point destination;
+    private Location destination;
 
-    public Move(Piece piece, Point destination) {
+    public Move(Piece piece, Location destination) {
         this.piece = piece;
         this.destination = destination;
     }
@@ -25,7 +25,7 @@ public class Move {
     }
 
     private boolean pieceExists(Board board, Piece piece) {
-        Point pos = piece.getPos();
+        Location pos = piece.getPos();
         if (pos != null && !piece.getPos().isOutside()) {
             Field field = board.getFields()[pos.getX()][pos.getY()];
             if (field.hasPiece() && field.getPiece().equals(piece)) {
@@ -43,11 +43,11 @@ public class Move {
         this.piece = piece;
     }
 
-    public Point getDestination() {
+    public Location getDestination() {
         return destination;
     }
 
-    public void setDestination(Point destination) {
+    public void setDestination(Location destination) {
         this.destination = destination;
     }
 

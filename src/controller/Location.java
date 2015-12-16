@@ -1,10 +1,10 @@
 package controller;
 
-public class Point {
+public class Location {
     private int x;
     private int y;
 
-    public Point(int x, int y) {
+    public Location(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -17,8 +17,8 @@ public class Point {
         return y;
     }
 
-    public Point add(int offsetX, int offsetY) {
-        return new Point(x + offsetX, y + offsetY);
+    public Location add(int offsetX, int offsetY) {
+        return new Location(x + offsetX, y + offsetY);
     }
 
     public boolean isOutside() {
@@ -26,8 +26,8 @@ public class Point {
         return x < 0 || y < 0 || x > maxLength || y > maxLength;
     }
 
-    public Point copy() {
-        return new Point(x, y);
+    public Location copy() {
+        return new Location(x, y);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Point {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Point other = (Point) obj;
+        Location other = (Location) obj;
         if (x != other.x)
             return false;
         if (y != other.y)
