@@ -1,4 +1,4 @@
-import controller.Runner;
+import com.ppcgse.koth.antichess.controller.Runner;
 
 /**
  * Created by Jarrett on 12/15/15.

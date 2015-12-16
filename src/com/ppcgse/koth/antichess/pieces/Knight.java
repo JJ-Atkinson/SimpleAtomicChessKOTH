@@ -1,6 +1,6 @@
-package pieces;
+package com.ppcgse.koth.antichess.pieces;
 
-import controller.*;
+import com.ppcgse.koth.antichess.controller.*;
 
 import java.util.Set;
 import java.util.HashSet;

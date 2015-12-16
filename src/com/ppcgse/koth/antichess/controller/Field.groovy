@@ -1,4 +1,4 @@
-package controller
+package com.ppcgse.koth.antichess.controller
 
 import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle

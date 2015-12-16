@@ -1,14 +1,14 @@
-package pieces;
+package com.ppcgse.koth.antichess.pieces;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import controller.Board;
-import controller.Color;
-import controller.Field;
-import controller.Piece;
-import controller.PieceType;
-import controller.Location;
+import com.ppcgse.koth.antichess.controller.Board;
+import com.ppcgse.koth.antichess.controller.Color;
+import com.ppcgse.koth.antichess.controller.Field;
+import com.ppcgse.koth.antichess.controller.Piece;
+import com.ppcgse.koth.antichess.controller.PieceType;
+import com.ppcgse.koth.antichess.controller.Location;
 
 public class Queen extends Piece {
 
