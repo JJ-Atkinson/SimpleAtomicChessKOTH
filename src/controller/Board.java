@@ -25,7 +25,7 @@ public class Board {
     public boolean movePiece(Move move) {
         boolean capture = false;
         Piece piece = move.getPiece();
-        Point dest = move.getDestination();
+        Location dest = move.getDestination();
         if (!dest.isOutside()) {
             capture = fields[dest.getX()][dest.getY()].hasPiece();
             // upgrade pawn
@@ -45,28 +45,6 @@ public class Board {
         return capture;
     }
 
-    public boolean isCheck(Player player, Player enemy) {
-        Piece king = getKing(player);
-        Point pos = king.getPos();
-
-        for (Piece piece : enemy.getPieces(this)) {
-            if (piece.getValidDestinationSet(this).contains(pos)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Piece getKing(Player player) {
-        for (Piece piece : player.getPieces(this)) {
-            if (piece.getType() == PieceType.KING) {
-                return piece;
-            }
-        }
-
-        return null; //player lost the game
-    }
-
     public Board copy() {
         Board copy = new Board();
         for (int i = 0; i < BOARD_LENGTH; i++) {
@@ -81,32 +59,32 @@ public class Board {
         for (int i = 0; i < BOARD_LENGTH; i++) {
             for (int j = 0; j < BOARD_LENGTH; j++) {
                 Color color = (i + j) % 2 == 0 ? Color.BLACK : Color.WHITE;
-                fields[i][j] = new Field(new Point(i, j), color);
+                fields[i][j] = new Field(new Location(i, j), color);
             }
         }
 
-        fields[0][0].setPiece(new Rook(Color.WHITE, new Point(0, 0)));
-        fields[1][0].setPiece(new Knight(Color.WHITE, new Point(1, 0)));
-        fields[2][0].setPiece(new Bishop(Color.WHITE, new Point(2, 0)));
-        fields[3][0].setPiece(new Queen(Color.WHITE, new Point(3, 0)));
-        fields[4][0].setPiece(new King(Color.WHITE, new Point(4, 0)));
-        fields[5][0].setPiece(new Bishop(Color.WHITE, new Point(5, 0)));
-        fields[6][0].setPiece(new Knight(Color.WHITE, new Point(6, 0)));
-        fields[7][0].setPiece(new Rook(Color.WHITE, new Point(7, 0)));
+        fields[0][0].setPiece(new Rook(Color.WHITE, new Location(0, 0)));
+        fields[1][0].setPiece(new Knight(Color.WHITE, new Location(1, 0)));
+        fields[2][0].setPiece(new Bishop(Color.WHITE, new Location(2, 0)));
+        fields[3][0].setPiece(new Queen(Color.WHITE, new Location(3, 0)));
+        fields[4][0].setPiece(new King(Color.WHITE, new Location(4, 0)));
+        fields[5][0].setPiece(new Bishop(Color.WHITE, new Location(5, 0)));
+        fields[6][0].setPiece(new Knight(Color.WHITE, new Location(6, 0)));
+        fields[7][0].setPiece(new Rook(Color.WHITE, new Location(7, 0)));
 
-        fields[0][7].setPiece(new Rook(Color.BLACK, new Point(0, 7)));
-        fields[1][7].setPiece(new Knight(Color.BLACK, new Point(1, 7)));
-        fields[2][7].setPiece(new Bishop(Color.BLACK, new Point(2, 7)));
-        fields[3][7].setPiece(new Queen(Color.BLACK, new Point(3, 7)));
-        fields[4][7].setPiece(new King(Color.BLACK, new Point(4, 7)));
-        fields[5][7].setPiece(new Bishop(Color.BLACK, new Point(5, 7)));
-        fields[6][7].setPiece(new Knight(Color.BLACK, new Point(6, 7)));
-        fields[7][7].setPiece(new Rook(Color.BLACK, new Point(7, 7)));
+        fields[0][7].setPiece(new Rook(Color.BLACK, new Location(0, 7)));
+        fields[1][7].setPiece(new Knight(Color.BLACK, new Location(1, 7)));
+        fields[2][7].setPiece(new Bishop(Color.BLACK, new Location(2, 7)));
+        fields[3][7].setPiece(new Queen(Color.BLACK, new Location(3, 7)));
+        fields[4][7].setPiece(new King(Color.BLACK, new Location(4, 7)));
+        fields[5][7].setPiece(new Bishop(Color.BLACK, new Location(5, 7)));
+        fields[6][7].setPiece(new Knight(Color.BLACK, new Location(6, 7)));
+        fields[7][7].setPiece(new Rook(Color.BLACK, new Location(7, 7)));
 
         //pawns
         for (int i = 0; i < BOARD_LENGTH; i++) {
-            fields[i][1].setPiece(new Pawn(Color.WHITE, new Point(i, 1)));
-            fields[i][6].setPiece(new Pawn(Color.BLACK, new Point(i, 6)));
+            fields[i][1].setPiece(new Pawn(Color.WHITE, new Location(i, 1)));
+            fields[i][6].setPiece(new Pawn(Color.BLACK, new Location(i, 6)));
         }
     }
 

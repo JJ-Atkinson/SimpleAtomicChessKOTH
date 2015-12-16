@@ -7,10 +7,10 @@ import java.util.Set;
 
 public abstract class Piece {
     private final Color team;
-    private Point pos;
+    private Location pos;
     private final PieceType type;
 
-    public Piece(Color team, Point pos, PieceType type) {
+    public Piece(Color team, Location pos, PieceType type) {
         this.team = team;
         this.pos = pos;
         this.type = type;
@@ -20,11 +20,11 @@ public abstract class Piece {
         return team;
     }
 
-    public Point getPos() {
+    public Location getPos() {
         return pos;
     }
 
-    public void setPos(Point pos) {
+    public void setPos(Location pos) {
         this.pos = pos;
     }
 
@@ -32,17 +32,17 @@ public abstract class Piece {
         return type;
     }
 
-    public abstract Set<Point> getValidDestinationSet(Board board);
+    public abstract Set<Location> getValidDestinationSet(Board board);
 
-    public Point[] getValidDestinations(Board board) {
-        Set<Point> dests = getValidDestinationSet(board);
-        return dests.toArray(new Point[dests.size()]);
+    public Location[] getValidDestinations(Board board) {
+        Set<Location> dests = getValidDestinationSet(board);
+        return dests.toArray(new Location[dests.size()]);
     }
 
     // vert = vertical, neg = negative, hor = horizontal
-    protected Set<Point> getDests(Field[][] fields, boolean vert, boolean negVert, boolean hor, boolean negHor) {
-        Set<Point> dests = new HashSet<>();
-        Point pos = getPos();
+    protected Set<Location> getDests(Field[][] fields, boolean vert, boolean negVert, boolean hor, boolean negHor) {
+        Set<Location> dests = new HashSet<>();
+        Location pos = getPos();
         Color enemy = getTeam().opposite();
 
         for (int offset = 1; offset < BOARD_LENGTH; offset++) {
@@ -50,7 +50,7 @@ public abstract class Piece {
                     negHor ? -offset : offset;
             int dy = !vert ? 0 :
                     negVert ? -offset : offset;
-            Point futurePos = pos.add(dx, dy);
+            Location futurePos = pos.add(dx, dy);
             if (futurePos.isOutside()) {
                 break;
             }

@@ -7,20 +7,20 @@ import java.util.HashSet;
 
 public class King extends Piece {
 
-    public King(Color team, Point pos) {
+    public King(Color team, Location pos) {
         super(team, pos, PieceType.KING);
     }
 
     @Override
-    public Set<Point> getValidDestinationSet(Board board) {
-        Set<Point> dests = new HashSet<>();
+    public Set<Location> getValidDestinationSet(Board board) {
+        Set<Location> dests = new HashSet<>();
         Field[][] fields = board.getFields();
-        Point pos = getPos();
+        Location pos = getPos();
         Color enemy = getTeam().opposite();
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                Point futurePos = pos.add(x, y);
+                Location futurePos = pos.add(x, y);
                 if (!futurePos.isOutside()) {
                     Field field = fields[futurePos.getX()][futurePos.getY()];
                     if (!field.hasPiece() || field.getPiece().getTeam() == enemy) {

@@ -1,11 +1,11 @@
 package controller;
 
 public class Field {
-    private final Point pos;
+    private final Location pos;
     private final Color color;
     private Piece piece;
 
-    public Field(Point pos, Color color) {
+    public Field(Location pos, Color color) {
         this.pos = pos;
         this.color = color;
     }
@@ -22,7 +22,7 @@ public class Field {
         this.piece = piece;
     }
 
-    public Point getPos() {
+    public Location getPos() {
         return pos;
     }
 

@@ -8,17 +8,17 @@ import controller.Color;
 import controller.Field;
 import controller.Piece;
 import controller.PieceType;
-import controller.Point;
+import controller.Location;
 
 public class Queen extends Piece {
 
-    public Queen(Color team, Point pos) {
+    public Queen(Color team, Location pos) {
         super(team, pos, PieceType.QUEEN);
     }
 
     @Override
-    public Set<Point> getValidDestinationSet(Board board) {
-        Set<Point> dests = new HashSet<>();
+    public Set<Location> getValidDestinationSet(Board board) {
+        Set<Location> dests = new HashSet<>();
         Field[][] fields = board.getFields();
 
         //horizontal fields

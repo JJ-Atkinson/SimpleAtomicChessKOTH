@@ -7,13 +7,13 @@ import java.util.HashSet;
 
 public class Bishop extends Piece {
 
-    public Bishop(Color team, Point pos) {
+    public Bishop(Color team, Location pos) {
         super(team, pos, PieceType.BISHOP);
     }
 
     @Override
-    public Set<Point> getValidDestinationSet(Board board) {
-        Set<Point> dests = new HashSet<>();
+    public Set<Location> getValidDestinationSet(Board board) {
+        Set<Location> dests = new HashSet<>();
         Field[][] fields = board.getFields();
 
         //diagonal fields
