@@ -1,6 +1,6 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
-import static controller.Board.BOARD_LENGTH;
+import static com.ppcgse.koth.antichess.controller.Board.BOARD_LENGTH;
 
 import java.util.HashSet;
 import java.util.Set;

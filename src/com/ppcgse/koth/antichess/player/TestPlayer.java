@@ -1,10 +1,10 @@
-package player;
+package com.ppcgse.koth.antichess.player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import controller.*;
+import com.ppcgse.koth.antichess.controller.*;
 
 public class TestPlayer extends Player {
 

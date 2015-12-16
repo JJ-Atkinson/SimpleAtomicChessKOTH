@@ -1,4 +1,4 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
 import java.util.ArrayList;
 import java.util.List;

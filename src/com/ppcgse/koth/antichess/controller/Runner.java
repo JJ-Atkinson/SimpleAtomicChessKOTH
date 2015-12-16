@@ -1,9 +1,9 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import player.*;
+import com.ppcgse.koth.antichess.player.*;
 
 public class Runner {
     public static final int WIN_POINTS = 3;

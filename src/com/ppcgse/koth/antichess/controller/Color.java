@@ -1,4 +1,4 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
 public enum Color {
     WHITE, BLACK;

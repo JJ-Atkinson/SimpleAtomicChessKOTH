@@ -1,4 +1,4 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
 public class Game {
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
@@ -40,14 +40,8 @@ public class Game {
         return player.isDisqualified() || player.getPieces(board).isEmpty() == false;
     }
 
-    // player can make a turn
-    private boolean turnAvailable(Player player) {
-        for (Piece piece : player.getPieces(board)) {
-            if (piece.getValidDestinationSet(board).size() > 0) {
-                return true;
-            }
-        }
-        return false;
+    private boolean wins(Player player) {
+        return !player.isDisqualified() || player.getPieces(board).isEmpty();
     }
 
     private void makeTurn(Player player, Player enemy) {

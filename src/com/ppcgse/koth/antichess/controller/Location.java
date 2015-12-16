@@ -1,4 +1,4 @@
-package controller;
+package com.ppcgse.koth.antichess.controller;
 
 public class Location {
     private int x;
