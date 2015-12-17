@@ -14,6 +14,7 @@ import groovy.transform.ToString
 class Move {
     Piece piece
     Location destination
+    PieceUpgradeType upgradeType = null
 
     public boolean isValid(Board board, Player player) {
         if (piece == null || destination == null || player.getTeam() != piece.getTeam()) {
@@ -32,8 +33,8 @@ class Move {
 
     private boolean pieceExists(Board board, Piece piece) {
         Location pos = piece.getPos();
-        if (pos != null && !piece.getPos().isOutside()) {
-            Field field = board.getFields()[pos.getX()][pos.getY()];
+        if (pos != null && piece.getPos().isValid()) {
+            Field field = board.fields[pos.getX()][pos.getY()];
             if (field.hasPiece() && field.getPiece().equals(piece)) {
                 return true;
             }

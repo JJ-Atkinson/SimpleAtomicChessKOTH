@@ -1,9 +1,6 @@
 package com.ppcgse.koth.antichess.pieces;
 
-import com.ppcgse.koth.antichess.controller.*;
-
-import java.util.Set;
-import java.util.HashSet;
+import com.ppcgse.koth.antichess.controller.*
 
 public class Knight extends Piece {
 
@@ -14,22 +11,14 @@ public class Knight extends Piece {
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
         Set<Location> dests = new HashSet<>();
-        Field[][] fields = board.getFields();
+        ArrayList<ArrayList<Field>> fields = board.fields;
         Location pos = getPos();
         Color enemy = getTeam().opposite();
 
-        Set<Location> futurePositions = new HashSet<>();
-        futurePositions.add(pos.add(2, 1));
-        futurePositions.add(pos.add(2, -1));
-        futurePositions.add(pos.add(-2, 1));
-        futurePositions.add(pos.add(-2, -1));
-        futurePositions.add(pos.add(1, 2));
-        futurePositions.add(pos.add(-1, 2));
-        futurePositions.add(pos.add(1, -2));
-        futurePositions.add(pos.add(-1, -2));
+        def futurePositions = genValidMoves(pos)
 
         for (Location futurePos : futurePositions) {
-            if (!futurePos.isOutside()) {
+            if (!futurePos.isValid()) {
                 Field field = fields[futurePos.getX()][futurePos.getY()];
                 if (!field.hasPiece() || field.getPiece().getTeam() == enemy) {
                     dests.add(futurePos);
@@ -39,8 +28,8 @@ public class Knight extends Piece {
         return dests;
     }
 
-    public Piece copy() {
-        return new Knight(getTeam(), getPos().copy());
+    def genValidMoves(Location baseLocation) {
+        def dirVectors = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [-1, 1], [1, -2], [-1, -2]]
+        return dirVectors.collect {baseLocation.plus(it[0], it[1])} as Set<Location>
     }
-
 }
