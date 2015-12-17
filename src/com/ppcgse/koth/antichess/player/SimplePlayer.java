@@ -12,7 +12,7 @@ public class SimplePlayer extends Player {
 
     @Override
     public Move getMove(Board board, Player enemy) {
-        //get all com.ppcgse.koth.antichess.pieces of this com.ppcgse.koth.antichess.player
+        //get all pieces of this player
         List<Piece> pieces = this.getPieces(board);
         for (Piece piece : pieces) {
             Location[] destinations = piece.getValidDestinations(board);

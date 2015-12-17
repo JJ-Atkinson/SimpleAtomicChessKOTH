@@ -1,10 +1,17 @@
 package com.ppcgse.koth.antichess.pieces;
 
-import com.ppcgse.koth.antichess.controller.*;
+import com.ppcgse.koth.antichess.controller.*
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
+import groovy.transform.ToString
+import groovy.transform.TupleConstructor;
 
 import java.util.Set;
 import java.util.HashSet;
 
+@TupleConstructor
+@ToString
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class King extends Piece {
 
     public King(Color team, Location pos) {
@@ -13,16 +20,16 @@ public class King extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        Set<Location> dests = new HashSet<>();
-        Field[][] fields = board.getFields();
-        Location pos = getPos();
-        Color enemy = getTeam().opposite();
+        def dests = new HashSet<>();
+        def fields = board.fields;
+        def pos = getPos();
+        def enemy = getTeam().opposite();
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 Location futurePos = pos.plus(x, y);
                 if (!futurePos.isValid()) {
-                    Field field = fields[futurePos.getX()][futurePos.getY()];
+                    Field field = fields[futurePos.x][futurePos.y];
                     if (!field.hasPiece() || field.getPiece().getTeam() == enemy) {
                         dests.add(futurePos);
                     }
@@ -31,9 +38,4 @@ public class King extends Piece {
         }
         return dests;
     }
-
-    public Piece copy() {
-        return new King(getTeam(), getPos().copy());
-    }
-
 }

@@ -47,18 +47,16 @@ public class Game {
         try {
             long start = System.currentTimeMillis();
 
-            Move move = player.getMove(board.clone(), enemy);
-            if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS) {
+            Move move = player.getMove((Board) board.clone(), enemy);
+            if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS)
                 player.disqualify();
-            }
+
             if (move.isValid(board, player)) {
-                if (board.movePiece(move) || move.getPiece().getType() == PieceType.PAWN) {
-                    turnsWithoutCaptures = 0;
-                } else {
-                    turnsWithoutCaptures++;
-                }
+                if (board.movePiece(move) || move.getPiece().getType() == PieceType.PAWN)
+                    turnsWithoutCaptures = -1;
+                turnsWithoutCaptures++;
             } else {
-                player.disqualify(); //invalid move
+                player.disqualify();
             }
         } catch (Exception e) {
             player.disqualify();

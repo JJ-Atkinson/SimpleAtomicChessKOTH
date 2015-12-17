@@ -46,20 +46,19 @@ public class Board {
 
     //returns whether a piece got captured
     public boolean movePiece(Move move) {
-        boolean capture = false;
         def piece = move.getPiece();
         def dest = move.getDestination();
 
         if (!dest.isValid())
             return false
 
-        capture = fields[dest.getX()][dest.getY()].hasPiece();
+        def capture = fields[dest.getX()][dest.getY()].hasPiece();
         // upgrade pawn
-        if (piece.getType() == PieceType.PAWN && (dest.getY() == 0 || dest.getY() == BOARD_LENGTH - 1)) {
+        if (piece.getType() == PieceType.PAWN && isHomeRow(dest))
             fields[dest.getX()][dest.getY()].setPiece(new Queen(piece.getTeam(), dest));
-        } else {
+        else
             fields[dest.getX()][dest.getY()].setPiece(piece);
-        }
+
         if (piece.getType() == PieceType.PAWN) {
             ((Pawn) piece).setMoved();
         }
@@ -69,6 +68,10 @@ public class Board {
         piece.setPos(dest);
 
         return capture;
+    }
+
+    private static boolean isHomeRow(Location loc) {
+        return (loc.getY() == 0 || loc.getY() == BOARD_LENGTH - 1)
     }
 
     @Override
