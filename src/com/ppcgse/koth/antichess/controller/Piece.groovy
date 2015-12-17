@@ -6,18 +6,22 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
-import java.util.stream.Stream;
-
-import static com.ppcgse.koth.antichess.controller.Board.BOARD_LENGTH;
-
 @ToString
 @EqualsAndHashCode
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public abstract class Piece {
     final Color team;
-    Location pos;
+    Location loc;
     final PieceType type;
+
+
+    protected def isValidMove = { Board board, Location test ->
+        if (!test.isValid() || test == loc)
+            return false
+        def field = board.fields[test.x][test.y]
+        return field.piece?.team != this.team
+    }
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
@@ -31,8 +35,8 @@ public abstract class Piece {
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
-            def nx = pos.x + xVec
-            def ny = pos.y + yVec
+            def nx = loc.x + xVec
+            def ny = loc.y + yVec
 
             def locations = []
 
@@ -41,13 +45,13 @@ public abstract class Piece {
                 def field = fields[nx][ny]
                 def addLocation = {locations += new Location(x: nx, y: ny)}
 
-                switch (field.piece) {
-                    case null: addLocation();
+                switch (field.piece?.team) {
+                    case null: addLocation()
                         break
-                    case {Piece p -> p.team == this.team.opposite()}:
-                        addLocation(); break loop;
-                    case {Piece p -> p.team == this.team}:
-                        break loop;
+                    case {it == this.team.opposite()}:
+                        addLocation(); break loop
+                    case {it == this.team}:
+                        break loop
                 }
 
                 nx += xVec

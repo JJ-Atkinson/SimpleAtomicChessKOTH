@@ -7,9 +7,6 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TupleConstructor;
 
-import java.util.Set;
-import java.util.HashSet;
-
 @TupleConstructor
 @EqualsAndHashCode
 @ToString
