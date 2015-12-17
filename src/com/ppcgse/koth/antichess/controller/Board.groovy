@@ -87,7 +87,7 @@ public class Board {
         return builder.toString();
     }
 
-    public Field getFeildAtLoc(Location loc) {
+    public Field getFieldAtLoc(Location loc) {
         return fields[loc.x][loc.y]
     }
 }
