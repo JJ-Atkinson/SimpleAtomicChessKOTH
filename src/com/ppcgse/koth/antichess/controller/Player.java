@@ -11,7 +11,7 @@ public abstract class Player {
     public final List<Piece> getPieces(Board board) {
         List<Piece> pieces = new ArrayList<>();
 
-        for (ArrayList<Field> rows : board.getFields()) {
+        for (ArrayList<Field> rows : board.fields) {
             for (Field field : rows) {
                 if (field.hasPiece()) {
                     Piece piece = field.getPiece();
@@ -38,14 +38,6 @@ public abstract class Player {
 
     public final boolean isDisqualified() {
         return disqualified;
-    }
-
-    public void setCheck(boolean check) {
-        this.check = check;
-    }
-
-    public final boolean isCheck() {
-        return check;
     }
 
     public abstract Move getMove(Board board, Player enemy);
