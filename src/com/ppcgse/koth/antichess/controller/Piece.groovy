@@ -4,7 +4,9 @@ import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor;
+import groovy.transform.TupleConstructor
+
+import java.util.stream.Stream;
 
 import static com.ppcgse.koth.antichess.controller.Board.BOARD_LENGTH;
 
@@ -24,31 +26,34 @@ public abstract class Piece {
         return dests.toArray(new Location[dests.size()]);
     }
 
-    // vert = vertical, neg = negative, hor = horizontal
-    protected Set<Location> getDests(Field[][] fields, boolean vert, boolean negVert, boolean hor, boolean negHor) {
-        Set<Location> dests = new HashSet<>();
-        Location pos = getPos();
-        Color enemy = getTeam().opposite();
+    protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
+        def fields = board.fields
+        directionVectors.collect {
+            def xVec = it[0]
+            def yVec = it[1]
+            def nx = pos.x + xVec
+            def ny = pos.y + yVec
 
-        for (int offset = 1; offset < BOARD_LENGTH; offset++) {
-            int dx = !hor ? 0 :
-                    negHor ? -offset : offset;
-            int dy = !vert ? 0 :
-                    negVert ? -offset : offset;
-            Location futurePos = pos.plus(dx, dy);
-            if (!futurePos.isValid()) {
-                break;
+            def locations = []
+
+            loop:
+            while (new Location(x: nx, y: ny).isValid()) {
+                def field = fields[nx][ny]
+                def addLocation = {locations += new Location(x: nx, y: ny)}
+
+                switch (field.piece) {
+                    case null: addLocation();
+                        break
+                    case {Piece p -> p.team == this.team.opposite()}:
+                        addLocation(); break loop;
+                    case {Piece p -> p.team == this.team}:
+                        break loop;
+                }
+
+                nx += xVec
+                ny += yVec
             }
-            Field field = fields[futurePos.getX()][futurePos.getY()];
-            if (!field.hasPiece()) {
-                dests.add(futurePos);
-            } else if (field.getPiece().getTeam() == enemy) {
-                dests.add(futurePos);
-                break;
-            } else {
-                break;
-            }
-        }
-        return dests;
+            locations
+        }.flatten() as Set<Location>
     }
 }
