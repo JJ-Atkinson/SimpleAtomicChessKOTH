@@ -15,7 +15,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Board {
-    private ArrayList<ArrayList<Field>> fields;
+    public final ArrayList<ArrayList<Field>> fields;
     public static final int BOARD_LENGTH = 8;
 
     public Board() {
@@ -27,7 +27,7 @@ public class Board {
         for (int i = 0; i < BOARD_LENGTH; i++) {
             for (int j = 0; j < BOARD_LENGTH; j++) {
                 Color color = (i + j) % 2 == 0 ? Color.BLACK : Color.WHITE;
-                fields[i][j] = new Field(pos: new Location(i, j), color: color);
+                fields[i][j] = new Field(new Location(i, j), color);
             }
         }
 
@@ -48,10 +48,6 @@ public class Board {
             fields[i][6].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(6, i)));
             fields[i][7].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(7, i)));
         }
-    }
-
-    public ArrayList<ArrayList<Field>> getFields() {
-        return fields;
     }
 
     //returns whether a piece got captured

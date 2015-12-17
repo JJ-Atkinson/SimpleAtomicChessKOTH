@@ -15,25 +15,19 @@ public class Game {
 
     public Game(Player player1, Player player2) {
         board = new Board();
-        board.initialize();
         players[0] = player1;
         players[0].setTeam(Color.WHITE);
         players[1] = player2;
         players[1].setTeam(Color.BLACK);
     }
 
-    int run() {
+    public void run() {
+        if (finised) throw new IllegalStateException("You can't rerun a game");
+
         int i = 0;
         while (!gameOver()) {
             makeTurn(players[i], players[(i + 1) % 2]);
             i = (i + 1) % 2;
-        }
-        if (loses(players[0]) && !loses(players[1])) {
-            return Runner.LOSE_POINTS;
-        } else if (loses(players[1]) && !loses(players[0])) {
-            return Runner.WIN_POINTS;
-        } else {
-            return Runner.DRAW_POINTS;
         }
 
         finised = true;
@@ -75,8 +69,9 @@ public class Game {
 
     public boolean gameOver() {
         for (Player player : players) {
-            if (player.isDisqualified() || board.getKing(player) == null
-                    || turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES || draw) {
+            if (player.isDisqualified() ||
+                player.getPieces(board).isEmpty() ||
+                turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) {
                 return true;
             }
         }
