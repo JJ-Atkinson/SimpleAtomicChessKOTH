@@ -1,11 +1,6 @@
 package com.ppcgse.koth.antichess.controller;
 
-import com.ppcgse.koth.antichess.pieces.Bishop;
-import com.ppcgse.koth.antichess.pieces.King;
-import com.ppcgse.koth.antichess.pieces.Knight;
-import com.ppcgse.koth.antichess.pieces.Pawn;
-import com.ppcgse.koth.antichess.pieces.Queen;
-import com.ppcgse.koth.antichess.pieces.Rook
+import com.ppcgse.koth.antichess.pieces.*
 import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
@@ -19,7 +14,7 @@ public class Board {
     public static final int BOARD_LENGTH = 8;
 
     public Board() {
-        fields = ([{new ArrayList<Field>()}] * BOARD_LENGTH)*.call()
+        fields = ([{ new ArrayList<Field>() }] * BOARD_LENGTH)*.call()
         initialize()
     }
 
@@ -41,7 +36,6 @@ public class Board {
                  Knight.class,
                  Rook.class];
 
-        //pawns
         for (int i = 0; i < BOARD_LENGTH; i++) {
             fields[i][0].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(0, i)));
             fields[i][1].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(1, i)));
@@ -53,24 +47,27 @@ public class Board {
     //returns whether a piece got captured
     public boolean movePiece(Move move) {
         boolean capture = false;
-        Piece piece = move.getPiece();
-        Location dest = move.getDestination();
-        if (!dest.isOutside()) {
-            capture = fields[dest.getX()][dest.getY()].hasPiece();
-            // upgrade pawn
-            if (piece.getType() == PieceType.PAWN && (dest.getY() == 0 || dest.getY() == BOARD_LENGTH - 1)) {
-                fields[dest.getX()][dest.getY()].setPiece(new Queen(piece.getTeam(), dest));
-            } else {
-                fields[dest.getX()][dest.getY()].setPiece(piece);
-            }
-            if (piece.getType() == PieceType.PAWN) {
-                ((Pawn) piece).setMoved();
-            }
-            //remove piece on old field
-            fields[piece.getPos().getX()][piece.getPos().getY()].setPiece(null);
-            //update position
-            piece.setPos(dest);
+        def piece = move.getPiece();
+        def dest = move.getDestination();
+
+        if (!dest.isValid())
+            return false
+
+        capture = fields[dest.getX()][dest.getY()].hasPiece();
+        // upgrade pawn
+        if (piece.getType() == PieceType.PAWN && (dest.getY() == 0 || dest.getY() == BOARD_LENGTH - 1)) {
+            fields[dest.getX()][dest.getY()].setPiece(new Queen(piece.getTeam(), dest));
+        } else {
+            fields[dest.getX()][dest.getY()].setPiece(piece);
         }
+        if (piece.getType() == PieceType.PAWN) {
+            ((Pawn) piece).setMoved();
+        }
+        //remove piece on old field
+        fields[piece.getPos().getX()][piece.getPos().getY()].setPiece(null);
+        //update position
+        piece.setPos(dest);
+
         return capture;
     }
 

@@ -17,13 +17,13 @@ public class Location {
         return y;
     }
 
-    public Location add(int offsetX, int offsetY) {
+    public Location plus(int offsetX, int offsetY) {
         return new Location(x + offsetX, y + offsetY);
     }
 
-    public boolean isOutside() {
-        int maxLength = Board.BOARD_LENGTH - 1;
-        return x < 0 || y < 0 || x > maxLength || y > maxLength;
+    public boolean isValid() {
+        int boardLength = Board.BOARD_LENGTH;
+        return x >= 0 || y >= 0 || x < boardLength || y < boardLength;
     }
 
     public Location copy() {

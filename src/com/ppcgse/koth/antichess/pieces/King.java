@@ -20,8 +20,8 @@ public class King extends Piece {
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                Location futurePos = pos.add(x, y);
-                if (!futurePos.isOutside()) {
+                Location futurePos = pos.plus(x, y);
+                if (!futurePos.isValid()) {
                     Field field = fields[futurePos.getX()][futurePos.getY()];
                     if (!field.hasPiece() || field.getPiece().getTeam() == enemy) {
                         dests.add(futurePos);

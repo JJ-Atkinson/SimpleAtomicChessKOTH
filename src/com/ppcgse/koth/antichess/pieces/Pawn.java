@@ -20,21 +20,21 @@ public class Pawn extends Piece {
         int offsetY = getTeam() == Color.WHITE ? 1 : -1;
         Location pos = getPos();
 
-        Location oneStepPos = pos.add(0, offsetY);
+        Location oneStepPos = pos.plus(0, offsetY);
         if (isEmpty(fields, oneStepPos)) {
             dests.add(oneStepPos);
             if (!hasMoved) {
-                Location twoStepPos = oneStepPos.add(0, offsetY);
+                Location twoStepPos = oneStepPos.plus(0, offsetY);
                 if (isEmpty(fields, twoStepPos)) {
                     dests.add(twoStepPos);
                 }
             }
         }
-        Location attackPos = oneStepPos.add(1, 0);
+        Location attackPos = oneStepPos.plus(1, 0);
         if (hasEnemy(fields, attackPos)) {
             dests.add(attackPos);
         }
-        attackPos = oneStepPos.add(-1, 0);
+        attackPos = oneStepPos.plus(-1, 0);
         if (hasEnemy(fields, attackPos)) {
             dests.add(attackPos);
         }
@@ -51,7 +51,7 @@ public class Pawn extends Piece {
     }
 
     private boolean isEmpty(Field[][] fields, Location pos) {
-        if (!pos.isOutside()) {
+        if (!pos.isValid()) {
             if (!fields[pos.getX()][pos.getY()].hasPiece()) {
                 return true;
             }
@@ -60,7 +60,7 @@ public class Pawn extends Piece {
     }
 
     private boolean hasEnemy(Field[][] fields, Location pos) {
-        if (!pos.isOutside()) {
+        if (!pos.isValid()) {
             Field field = fields[pos.getX()][pos.getY()];
             if (field.hasPiece() && field.getPiece().getTeam() == getTeam().opposite()) {
                 return true;

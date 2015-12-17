@@ -35,8 +35,8 @@ public abstract class Piece {
                     negHor ? -offset : offset;
             int dy = !vert ? 0 :
                     negVert ? -offset : offset;
-            Location futurePos = pos.add(dx, dy);
-            if (futurePos.isOutside()) {
+            Location futurePos = pos.plus(dx, dy);
+            if (!futurePos.isValid()) {
                 break;
             }
             Field field = fields[futurePos.getX()][futurePos.getY()];
