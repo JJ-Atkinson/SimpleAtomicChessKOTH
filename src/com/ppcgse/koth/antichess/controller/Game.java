@@ -49,7 +49,7 @@ public class Game {
 
             Move move = player.getMove(board.clone(), enemy);
             if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS) {
-                player.setDisqualified();
+                player.disqualify();
             }
             if (move.isValid(board, player)) {
                 if (board.movePiece(move) || move.getPiece().getType() == PieceType.PAWN) {
@@ -58,10 +58,10 @@ public class Game {
                     turnsWithoutCaptures++;
                 }
             } else {
-                player.setDisqualified(); //invalid move
+                player.disqualify(); //invalid move
             }
         } catch (Exception e) {
-            player.setDisqualified();
+            player.disqualify();
             System.out.println("Exception while moving " + player);
         }
 
