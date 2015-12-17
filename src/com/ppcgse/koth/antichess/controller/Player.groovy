@@ -1,8 +1,12 @@
-package com.ppcgse.koth.antichess.controller;
+package com.ppcgse.koth.antichess.controller
 
+import groovy.transform.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public abstract class Player {
     private Color team;
     private boolean disqualified = false;
+    public PieceUpgradeType upgradeType;
 
     public final List<Piece> getPieces(Board board) {
         (board.fields
@@ -27,7 +31,7 @@ public abstract class Player {
         return disqualified;
     }
 
-    public abstract Move getMove(Board board, Player enemy);
+    public abstract Move getMove(Board board, Player enemy, Set<Move> validMoves);
 
     public final String toString() {
         return "Player " + getClass() + " (" + getTeam() + ")";

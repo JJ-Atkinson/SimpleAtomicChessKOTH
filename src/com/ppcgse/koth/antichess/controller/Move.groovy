@@ -34,8 +34,8 @@ class Move {
     }
 
     private boolean pieceExists(Board board, Piece piece) {
-        Location pos = piece.getPos();
-        if (pos != null && piece.getPos().isValid()) {
+        Location pos = piece.getLoc();
+        if (pos != null && piece.getLoc().isValid()) {
             Field field = board.fields[pos.x][pos.y];
             if (field.hasPiece() && field.getPiece().equals(piece)) {
                 return true;

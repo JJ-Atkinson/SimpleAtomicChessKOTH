@@ -1,10 +1,19 @@
 package com.ppcgse.koth.antichess.pieces;
 
-import com.ppcgse.koth.antichess.controller.*;
+import com.ppcgse.koth.antichess.controller.*
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import groovy.transform.TupleConstructor;
 
 import java.util.Set;
 import java.util.HashSet;
 
+@ToString
+@EqualsAndHashCode
+@TupleConstructor
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Rook extends Piece {
 
     public Rook(Color team, Location pos) {
@@ -13,21 +22,6 @@ public class Rook extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        Set<Location> dests = new HashSet<>();
-        Field[][] fields = board.getFields();
-
-        //horizontal fields
-        dests.addAll(super.getDests(fields, true, false, false, false));
-        dests.addAll(super.getDests(fields, true, true, false, false));
-
-        //vertical fields
-        dests.addAll(super.getDests(fields, false, false, true, false));
-        dests.addAll(super.getDests(fields, false, false, true, true));
-
-        return dests;
-    }
-
-    public Piece copy() {
-        return new Rook(getTeam(), getPos().copy());
+        genValidDests(board, [[1, 0], [0, 1], [-1, 0], [0, -1]])
     }
 }

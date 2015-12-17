@@ -1,15 +1,21 @@
 package com.ppcgse.koth.antichess.pieces;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.ppcgse.koth.antichess.controller.Board;
 import com.ppcgse.koth.antichess.controller.Color;
-import com.ppcgse.koth.antichess.controller.Field;
 import com.ppcgse.koth.antichess.controller.Piece;
 import com.ppcgse.koth.antichess.controller.PieceType;
-import com.ppcgse.koth.antichess.controller.Location;
+import com.ppcgse.koth.antichess.controller.Location
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import groovy.transform.TupleConstructor;
 
+
+@ToString
+@EqualsAndHashCode
+@TupleConstructor
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Queen extends Piece {
 
     public Queen(Color team, Location pos) {
@@ -18,28 +24,6 @@ public class Queen extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        def dests = new HashSet<>();
-        def fields = board.fields;
-
-        //horizontal fields
-        dests.addAll(super.getDests(fields, true, false, false, false));
-        dests.addAll(super.getDests(fields, true, true, false, false));
-
-        //vertical fields
-        dests.addAll(super.getDests(fields, false, false, true, false));
-        dests.addAll(super.getDests(fields, false, false, true, true));
-
-        //diagonal fields
-        dests.addAll(super.getDests(fields, true, false, true, false));
-        dests.addAll(super.getDests(fields, true, true, true, true));
-        dests.addAll(super.getDests(fields, true, true, true, false));
-        dests.addAll(super.getDests(fields, true, false, true, true));
-
-        return dests;
+        genValidDests(board, [-1..1, -1..1].combinations())
     }
-
-    public Piece copy() {
-        return new Queen(getTeam(), getPos().copy());
-    }
-
 }

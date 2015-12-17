@@ -37,10 +37,10 @@ public class Board {
                  Rook.class];
 
         for (int i = 0; i < BOARD_LENGTH; i++) {
-            fields[i][0].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(0, i)));
-            fields[i][1].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(1, i)));
-            fields[i][6].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(6, i)));
-            fields[i][7].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(7, i)));
+            fields[i][0].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(x: 0, y: i)));
+            fields[i][1].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(x: 1, y: i)));
+            fields[i][6].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(x: 6, y: i)));
+            fields[i][7].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(x: 7, y: i)));
         }
     }
 
@@ -52,26 +52,26 @@ public class Board {
         if (!dest.isValid())
             return false
 
-        def capture = fields[dest.getX()][dest.getY()].hasPiece();
+        def capture = fields[dest.x][dest.y].hasPiece();
         // upgrade pawn
         if (piece.getType() == PieceType.PAWN && isHomeRow(dest))
-            fields[dest.getX()][dest.getY()].setPiece(new Queen(piece.getTeam(), dest));
+            fields[dest.x][dest.y].setPiece(new Queen(piece.getTeam(), dest));
         else
-            fields[dest.getX()][dest.getY()].setPiece(piece);
+            fields[dest.x][dest.y].setPiece(piece);
 
         if (piece.getType() == PieceType.PAWN) {
             ((Pawn) piece).setMoved();
         }
         //remove piece on old field
-        fields[piece.getPos().getX()][piece.getPos().getY()].setPiece(null);
+        fields[piece.getLoc().x][piece.getLoc().y].setPiece(null);
         //update position
-        piece.setPos(dest);
+        piece.setLoc(dest);
 
         return capture;
     }
 
     private static boolean isHomeRow(Location loc) {
-        return (loc.getY() == 0 || loc.getY() == BOARD_LENGTH - 1)
+        return (loc.x == 0 || loc.y == BOARD_LENGTH - 1)
     }
 
     @Override
@@ -85,5 +85,9 @@ public class Board {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    public Field getFeildAtLoc(Location loc) {
+        return fields[loc.x][loc.y]
     }
 }

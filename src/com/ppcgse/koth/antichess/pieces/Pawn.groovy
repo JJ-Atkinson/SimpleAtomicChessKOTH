@@ -2,11 +2,16 @@ package com.ppcgse.koth.antichess.pieces;
 
 import com.ppcgse.koth.antichess.controller.*
 import groovy.transform.AutoClone
-import groovy.transform.AutoCloneStyle;
+import groovy.transform.AutoCloneStyle
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import groovy.transform.TupleConstructor;
 
+@EqualsAndHashCode
+@ToString
+@TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Pawn extends Piece {
-    private boolean hasMoved = false;
 
     public Pawn(Color team, Location pos) {
         super(team, pos, PieceType.PAWN);
@@ -14,58 +19,17 @@ public class Pawn extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        Set<Location> dests = new HashSet<>();
-        def fields = board.fields;
+        int direction = getTeam() == Color.WHITE ? 1 : -1;
 
-        int offsetY = getTeam() == Color.WHITE ? 1 : -1;
-        Location pos = getPos();
-
-        Location oneStepPos = pos.plus(0, offsetY);
-        if (isEmpty(fields, oneStepPos)) {
-            dests.add(oneStepPos);
-            if (!hasMoved) {
-                Location twoStepPos = oneStepPos.plus(0, offsetY);
-                if (isEmpty(fields, twoStepPos)) {
-                    dests.add(twoStepPos);
-                }
-            }
-        }
-        Location attackPos = oneStepPos.plus(1, 0);
-        if (hasEnemy(fields, attackPos)) {
-            dests.add(attackPos);
-        }
-        attackPos = oneStepPos.plus(-1, 0);
-        if (hasEnemy(fields, attackPos)) {
-            dests.add(attackPos);
-        }
-
-        return dests;
+        ([loc.plus(1, direction),
+          loc.plus(-1, direction),
+          loc.plus(0, direction)]
+          + (canDoubleMove() ? [loc.plus(0, direction*2)] : []))
+                .findAll (isValidMove.curry(board))
+                .findAll {board.getFeildAtLoc(it).piece?.team != team} as Set<Location>
     }
 
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    public void setMoved() {
-        hasMoved = true;
-    }
-
-    private boolean isEmpty(Field[][] fields, Location pos) {
-        if (!pos.isValid()) {
-            if (!fields[pos.getX()][pos.getY()].hasPiece()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean hasEnemy(Field[][] fields, Location pos) {
-        if (!pos.isValid()) {
-            Field field = fields[pos.getX()][pos.getY()];
-            if (field.hasPiece() && field.getPiece().getTeam() == getTeam().opposite()) {
-                return true;
-            }
-        }
-        return false;
+    private boolean canDoubleMove() {
+        loc.y == 1 || loc.y == 6
     }
 }
