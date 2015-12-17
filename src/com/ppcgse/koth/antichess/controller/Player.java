@@ -11,7 +11,7 @@ public abstract class Player {
     public final List<Piece> getPieces(Board board) {
         List<Piece> pieces = new ArrayList<>();
 
-        for (Field[] rows : board.getFields()) {
+        for (ArrayList<Field> rows : board.getFields()) {
             for (Field field : rows) {
                 if (field.hasPiece()) {
                     Piece piece = field.getPiece();

@@ -1,12 +1,17 @@
 package com.ppcgse.koth.antichess.controller;
 
+import static com.ppcgse.koth.antichess.controller.GameResult.*;
+
 public class Game {
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
     private Board board;
     private Player[] players = new Player[2];
     private int turnsWithoutCaptures = 0;
-    private boolean draw = false;
+    private boolean finised = false;
+    private GameResult whiteGameRes = DRAW;
+    private GameResult blackGameRes = DRAW;
+
 
     public Game(Player player1, Player player2) {
         board = new Board();
@@ -20,12 +25,8 @@ public class Game {
     int run() {
         int i = 0;
         while (!gameOver()) {
-            if (!turnAvailable(players[i])) {
-                draw = true;
-            } else {
-                makeTurn(players[i], players[(i + 1) % 2]);
-                i = (i + 1) % 2;
-            }
+            makeTurn(players[i], players[(i + 1) % 2]);
+            i = (i + 1) % 2;
         }
         if (loses(players[0]) && !loses(players[1])) {
             return Runner.LOSE_POINTS;
@@ -34,21 +35,25 @@ public class Game {
         } else {
             return Runner.DRAW_POINTS;
         }
+
+        finised = true;
     }
 
-    private boolean loses(Player player) {
-        return player.isDisqualified() || player.getPieces(board).isEmpty() == false;
+    public GameResult getWhiteGameRes() {
+        if (!finised) throw new IllegalStateException("You can't get the result of and unfinished game silly!");
+        return whiteGameRes;
     }
 
-    private boolean wins(Player player) {
-        return !player.isDisqualified() || player.getPieces(board).isEmpty();
+    public GameResult getBlackGameRes() {
+        if (!finised) throw new IllegalStateException("You can't get the result of and unfinished game silly!");
+        return blackGameRes;
     }
 
     private void makeTurn(Player player, Player enemy) {
         try {
             long start = System.currentTimeMillis();
 
-            Move move = player.getMove(board.copy(), enemy);
+            Move move = player.getMove(board.clone(), enemy);
             if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS) {
                 player.setDisqualified();
             }

@@ -6,10 +6,14 @@ import com.ppcgse.koth.antichess.pieces.Knight;
 import com.ppcgse.koth.antichess.pieces.Pawn;
 import com.ppcgse.koth.antichess.pieces.Queen;
 import com.ppcgse.koth.antichess.pieces.Rook
-
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.TupleConstructor
 
 @EqualsAndHashCode
+@TupleConstructor
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Board {
     private ArrayList<ArrayList<Field>> fields;
     public static final int BOARD_LENGTH = 8;
@@ -46,7 +50,7 @@ public class Board {
         }
     }
 
-    public Field[][] getFields() {
+    public ArrayList<ArrayList<Field>> getFields() {
         return fields;
     }
 
