@@ -1,10 +1,10 @@
 package com.ppcgse.koth.antichess.pieces;
 
-import com.ppcgse.koth.antichess.controller.*;
+import com.ppcgse.koth.antichess.controller.*
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle;
 
-import java.util.Set;
-import java.util.HashSet;
-
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Pawn extends Piece {
     private boolean hasMoved = false;
 
@@ -15,7 +15,7 @@ public class Pawn extends Piece {
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
         Set<Location> dests = new HashSet<>();
-        Field[][] fields = board.getFields();
+        def fields = board.fields;
 
         int offsetY = getTeam() == Color.WHITE ? 1 : -1;
         Location pos = getPos();
@@ -67,13 +67,5 @@ public class Pawn extends Piece {
             }
         }
         return false;
-    }
-
-    public Piece copy() {
-        Pawn copy = new Pawn(getTeam(), getPos().copy());
-        if (hasMoved) {
-            copy.setMoved();
-        }
-        return copy;
     }
 }

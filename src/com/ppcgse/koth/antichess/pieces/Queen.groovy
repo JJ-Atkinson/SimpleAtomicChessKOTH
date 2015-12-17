@@ -18,8 +18,8 @@ public class Queen extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        Set<Location> dests = new HashSet<>();
-        Field[][] fields = board.getFields();
+        def dests = new HashSet<>();
+        def fields = board.fields;
 
         //horizontal fields
         dests.addAll(super.getDests(fields, true, false, false, false));
