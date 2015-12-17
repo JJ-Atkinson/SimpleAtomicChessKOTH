@@ -26,7 +26,7 @@ public class Pawn extends Piece {
           loc.plus(0, direction)]
           + (canDoubleMove() ? [loc.plus(0, direction*2)] : []))
                 .findAll (isValidMove.curry(board))
-                .findAll {board.getFeildAtLoc(it).piece?.team != team} as Set<Location>
+                .findAll {board.getFieldAtLoc(it).piece?.team != team} as Set<Location>
     }
 
     private boolean canDoubleMove() {
