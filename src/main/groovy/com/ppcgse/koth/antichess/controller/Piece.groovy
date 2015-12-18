@@ -6,7 +6,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
-@ToString
+@ToString(includeFields = true, excludes = ['metaClass', 'isValidMove'], includePackage = false)
 @EqualsAndHashCode
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public abstract class Piece {
@@ -14,7 +14,7 @@ public abstract class Piece {
     final PieceType type;
     Location loc;
 
-    Piece(Location loc, Color team, PieceType type) {
+    Piece(Color team, Location loc, PieceType type) {
         this.loc = loc
         this.team = team
         this.type = type
@@ -29,11 +29,6 @@ public abstract class Piece {
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
-    public Location[] getValidDestinations(Board board) {
-        Set<Location> dests = getValidDestinationSet(board);
-        return dests.toArray(new Location[dests.size()]);
-    }
-
     protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
         def fields = board.fields
         directionVectors.collect {
@@ -44,7 +39,6 @@ public abstract class Piece {
 
             def locations = []
 
-//            loop:
             while (new Location(x: nx, y: ny).isValid()) {
                 def field = fields[nx][ny]
                 def addLocation = {locations += new Location(x: nx, y: ny)}
@@ -58,7 +52,6 @@ public abstract class Piece {
                     addLocation()
                     break
                 }
-
 
                 nx += xVec
                 ny += yVec

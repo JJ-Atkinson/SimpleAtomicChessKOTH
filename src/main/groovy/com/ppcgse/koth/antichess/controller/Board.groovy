@@ -27,7 +27,7 @@ public class Board {
         for (int i = 0; i < BOARD_LENGTH; i++) {
             for (int j = 0; j < BOARD_LENGTH; j++) {
                 Color color = (i + j) % 2 == 0 ? Color.BLACK : Color.WHITE;
-                fields[i][j] = new Field(new Location(i, j), color);
+                fields[i][j] = new Field(new Location(x: i, y: j), color);
             }
         }
 
@@ -50,7 +50,7 @@ public class Board {
     }
 
     //returns whether a piece got captured
-    public boolean movePiece(Move move) {
+    public boolean movePiece(Player player, Move move) {
         def piece = move.getPiece();
         def dest = move.getDestination();
 
@@ -59,14 +59,14 @@ public class Board {
 
         def capture = fields[dest.x][dest.y].hasPiece();
         // upgrade pawn
-        if (piece.getType() == PieceType.PAWN && isHomeRow(dest))
-            fields[dest.x][dest.y].setPiece(new Queen(piece.getTeam(), dest));
-        else
+        if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
+            if (player.pieceUpgradeType.clazz == null)
+                throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
+            def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
+            fields[dest.x][dest.y].setPiece(newPiece);
+        } else
             fields[dest.x][dest.y].setPiece(piece);
 
-        if (piece.getType() == PieceType.PAWN) {
-            ((Pawn) piece).setMoved();
-        }
         //remove piece on old field
         fields[piece.getLoc().x][piece.getLoc().y].setPiece(null);
         //update position

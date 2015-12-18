@@ -7,6 +7,7 @@ import com.ppcgse.koth.antichess.controller.Runner;
  */
 public class Main {
     public static void main(String[] args) {
+        println 'Running'
         new Runner().runGames();
     }
 }

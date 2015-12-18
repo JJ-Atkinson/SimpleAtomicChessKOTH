@@ -4,7 +4,7 @@ public enum Color {
     WHITE, BLACK;
 
     public Color opposite() {
-        return this == Color.WHITE ? Color.BLACK : Color.WHITE;
+        return this == WHITE ? BLACK : WHITE;
     }
 
     public String getInitial() {
