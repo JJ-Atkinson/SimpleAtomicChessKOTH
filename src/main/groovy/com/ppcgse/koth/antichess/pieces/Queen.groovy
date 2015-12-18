@@ -12,7 +12,6 @@ import com.ppcgse.koth.antichess.controller.Piece
 import com.ppcgse.koth.antichess.controller.PieceType;
 
 
-@ToString
 @EqualsAndHashCode
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
@@ -24,6 +23,9 @@ public class Queen extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        genValidDests(board, [-1..1, -1..1].combinations())
+        genValidDests(board, [-1..1, -1..1]
+                                .combinations()
+                                .findAll { it != [0, 0] }
+                     )
     }
 }

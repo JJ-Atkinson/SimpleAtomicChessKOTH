@@ -5,7 +5,14 @@ import com.ppcgse.koth.antichess.controller.Color
 import com.ppcgse.koth.antichess.controller.Location
 import com.ppcgse.koth.antichess.controller.Piece
 import com.ppcgse.koth.antichess.controller.PieceType
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.TupleConstructor
 
+@EqualsAndHashCode
+@TupleConstructor
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Knight extends Piece {
 
     public Knight(Color team, Location pos) {

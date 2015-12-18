@@ -49,7 +49,8 @@ public class Runner {
             addResult(class1, game.getWhiteGameRes());
             addResult(class2, game.getBlackGameRes());
         } catch (Exception e) {
-            System.out.println("Error in game between " + class1 + " and " + class2);
+            System.err.println("Error in game between " + class1 + " and " + class2);
+            e.printStackTrace()
         }
     }
 

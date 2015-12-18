@@ -13,7 +13,6 @@ import com.ppcgse.koth.antichess.controller.PieceType;
 
 @TupleConstructor
 @EqualsAndHashCode
-@ToString
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Bishop extends Piece {
     public Bishop(Color team, Location pos) {

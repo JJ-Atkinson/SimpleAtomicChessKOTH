@@ -9,7 +9,7 @@ import groovy.transform.TupleConstructor
 /**
  * Created by Jarrett on 12/16/15.
  */
-@ToString
+@ToString(includeNames = true, includeFields = true, excludes = ['metaClass'], includePackage = false)
 @EqualsAndHashCode
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 @TupleConstructor

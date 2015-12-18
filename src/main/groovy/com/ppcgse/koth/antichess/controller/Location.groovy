@@ -7,7 +7,7 @@ import groovy.transform.ToString
 import groovy.transform.TupleConstructor;
 
 @EqualsAndHashCode
-@ToString
+@ToString(includeFields = true, excludes = ['metaClass'], includePackage = false)
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Location {

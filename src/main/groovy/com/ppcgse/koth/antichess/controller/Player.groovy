@@ -6,13 +6,13 @@ import groovy.transform.EqualsAndHashCode;
 public abstract class Player {
     private Color team;
     private boolean disqualified = false;
-    public PieceUpgradeType upgradeType;
+    public PieceUpgradeType pieceUpgradeType;
 
     public final List<Piece> getPieces(Board board) {
         (board.fields
                 .flatten() as List<Field>)
                 .collect {Field f -> f.piece}
-                .findAll {Piece p -> p == null ? false : p.team == team}
+                .findAll {Piece p -> p?.team == team}
     }
 
     final void setTeam(Color team) {

@@ -12,7 +12,6 @@ import com.ppcgse.koth.antichess.controller.Piece
 import com.ppcgse.koth.antichess.controller.PieceType;
 
 @EqualsAndHashCode
-@ToString
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Pawn extends Piece {

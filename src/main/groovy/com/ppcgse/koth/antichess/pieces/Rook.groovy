@@ -11,7 +11,6 @@ import com.ppcgse.koth.antichess.controller.Location
 import com.ppcgse.koth.antichess.controller.Piece
 import com.ppcgse.koth.antichess.controller.PieceType
 
-@ToString
 @EqualsAndHashCode
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)

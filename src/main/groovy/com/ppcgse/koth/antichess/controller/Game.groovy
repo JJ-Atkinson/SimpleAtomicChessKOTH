@@ -72,7 +72,7 @@ public class Game {
                 player.disqualify();
 
             if (validMoves.contains(move)) {
-                if (board.movePiece(move))
+                if (board.movePiece(player, move))
                     turnsWithoutCaptures = -1;
                 turnsWithoutCaptures++;
             } else {
