@@ -8,13 +8,17 @@ import groovy.transform.TupleConstructor
 
 @ToString
 @EqualsAndHashCode
-@TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public abstract class Piece {
     final Color team;
-    Location loc;
     final PieceType type;
+    Location loc;
 
+    Piece(Location loc, Color team, PieceType type) {
+        this.loc = loc
+        this.team = team
+        this.type = type
+    }
 
     protected def isValidMove = { Board board, Location test ->
         if (!test.isValid() || test == loc)
