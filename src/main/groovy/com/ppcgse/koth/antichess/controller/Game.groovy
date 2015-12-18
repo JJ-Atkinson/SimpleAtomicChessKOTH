@@ -91,8 +91,8 @@ public class Game {
         def allMoves = player.getPieces(board).collect {[it, it.getValidDestinationSet(board)]}
         def attackMoves = allMoves
                 .collect {
-                    [it[0], it[1].findAll {board.getFieldAtLoc(it[0])?.piece?.team == enemy.team}]
-                }.findAll {it[1]}
+            [it[0], it[1].findAll {board.getFieldAtLoc(it[0])?.piece?.team == enemy.team}]
+        }.findAll {it[1]}
 
         if (attackMoves.isEmpty())
             return allMoves.collect {
@@ -107,8 +107,8 @@ public class Game {
     public boolean gameOver() {
         for (Player player : players) {
             if (player.isDisqualified() ||
-                player.getPieces(board).isEmpty() ||
-                turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) {
+                    player.getPieces(board).isEmpty() ||
+                    turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) {
                 return true;
             }
         }

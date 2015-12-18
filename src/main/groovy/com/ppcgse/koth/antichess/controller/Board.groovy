@@ -1,10 +1,15 @@
-package com.ppcgse.koth.antichess.controller;
+package com.ppcgse.koth.antichess.controller
 
-import com.ppcgse.koth.antichess.pieces.*
 import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.TupleConstructor
+import com.ppcgse.koth.antichess.pieces.King
+import com.ppcgse.koth.antichess.pieces.Knight
+import com.ppcgse.koth.antichess.pieces.Pawn
+import com.ppcgse.koth.antichess.pieces.Queen
+import com.ppcgse.koth.antichess.pieces.Rook
+import com.ppcgse.koth.antichess.pieces.Bishop
 
 @EqualsAndHashCode
 @TupleConstructor
