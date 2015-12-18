@@ -8,7 +8,7 @@ import com.ppcgse.koth.antichess.player.TestPlayer;
 
 public class Runner {
     private static final int GAMES_PER_PAIR = 10;
-    private final Class[] classes = {SimplePlayer.class, TestPlayer.class};
+    private final Class[] classes = [SimplePlayer.class, TestPlayer.class];
     private final Map<Class<? extends Player>, Integer> scores = new HashMap<>();
 
     public static void main(String... args) {
@@ -49,7 +49,7 @@ public class Runner {
             addResult(class1, game.getWhiteGameRes());
             addResult(class2, game.getBlackGameRes());
         } catch (Exception e) {
-            System.out.println("Error in game betwenn " + class1 + " and " + class2);
+            System.out.println("Error in game between " + class1 + " and " + class2);
         }
     }
 
@@ -60,10 +60,10 @@ public class Runner {
     private void printScores() {
         scores.entrySet()
                 .stream()
-                .sorted((o1, o2) -> o1.getValue().compareTo(o2.getValue()))
-                .forEachOrdered(classIntegerEntry ->
+                .sorted ({o1, o2 -> o1.getValue().compareTo(o2.getValue())} as Comparator)
+                .forEachOrdered {
                         System.out.println(
-                                classIntegerEntry.getKey().getSimpleName() + " -> " +
-                                        classIntegerEntry.getValue()));
+                                it.getKey().getSimpleName() + " -> " +
+                                        it.getValue())}
     }
 }
