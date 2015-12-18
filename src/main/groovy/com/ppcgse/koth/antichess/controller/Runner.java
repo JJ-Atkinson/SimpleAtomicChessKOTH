@@ -3,12 +3,10 @@ package com.ppcgse.koth.antichess.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ppcgse.koth.antichess.player.*;
+import com.ppcgse.koth.antichess.player.SimplePlayer;
+import com.ppcgse.koth.antichess.player.TestPlayer;
 
 public class Runner {
-    public static final int WIN_POINTS = 3;
-    public static final int DRAW_POINTS = 1;
-    public static final int LOSE_POINTS = 0;
     private static final int GAMES_PER_PAIR = 10;
     private final Class[] classes = {SimplePlayer.class, TestPlayer.class};
     private final Map<Class<? extends Player>, Integer> scores = new HashMap<>();
@@ -45,44 +43,27 @@ public class Runner {
         try {
             Player player1 = (Player) class1.newInstance();
             Player player2 = (Player) class2.newInstance();
-            int result = new Game(player1, player2).run();
+            Game game = new Game(player1, player2);
+            game.run();
 
-            addResult(class1, result, false);
-            addResult(class2, result, true);
+            addResult(class1, game.getWhiteGameRes());
+            addResult(class2, game.getBlackGameRes());
         } catch (Exception e) {
             System.out.println("Error in game betwenn " + class1 + " and " + class2);
         }
     }
 
-    private void addResult(Class player, int result, boolean reverse) {
-        if (reverse) {
-            if (result == WIN_POINTS) {
-                result = LOSE_POINTS;
-            } else if (result == LOSE_POINTS) {
-                result = WIN_POINTS;
-            }
-        }
-        int newScore = scores.get(player) + result;
-        scores.put(player, newScore);
+    private void addResult(Class player, GameResult result) {
+        scores.put(player, scores.get(player) + result.scoreChange);
     }
 
     private void printScores() {
-        int bestScore = 0;
-        Class currPlayer = null;
-        int place = 1;
-
-        while (scores.size() > 0) {
-            bestScore = 0;
-            currPlayer = null;
-            for (Class player : scores.keySet()) {
-                int playerScore = scores.get(player);
-                if (scores.get(player) >= bestScore) {
-                    bestScore = playerScore;
-                    currPlayer = player;
-                }
-            }
-            System.out.println(String.format("%02d", place++) + ") " + currPlayer + ": " + bestScore);
-            scores.remove(currPlayer);
-        }
+        scores.entrySet()
+                .stream()
+                .sorted((o1, o2) -> o1.getValue().compareTo(o2.getValue()))
+                .forEachOrdered(classIntegerEntry ->
+                        System.out.println(
+                                classIntegerEntry.getKey().getSimpleName() + " -> " +
+                                        classIntegerEntry.getValue()));
     }
 }

@@ -1,6 +1,8 @@
-package com.ppcgse.koth.antichess.player;
+package com.ppcgse.koth.antichess.player
 
-import com.ppcgse.koth.antichess.controller.*
+import com.ppcgse.koth.antichess.controller.Player
+import com.ppcgse.koth.antichess.controller.Board
+import com.ppcgse.koth.antichess.controller.Move
 
 import java.util.concurrent.ThreadLocalRandom;
 

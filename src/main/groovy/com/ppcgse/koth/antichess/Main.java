@@ -1,3 +1,5 @@
+package com.ppcgse.koth.antichess;
+
 import com.ppcgse.koth.antichess.controller.Runner;
 
 /**

@@ -1,6 +1,10 @@
-package com.ppcgse.koth.antichess.pieces;
+package com.ppcgse.koth.antichess.pieces
 
-import com.ppcgse.koth.antichess.controller.*
+import com.ppcgse.koth.antichess.controller.Board
+import com.ppcgse.koth.antichess.controller.Color
+import com.ppcgse.koth.antichess.controller.Location
+import com.ppcgse.koth.antichess.controller.Piece
+import com.ppcgse.koth.antichess.controller.PieceType
 
 public class Knight extends Piece {
 
