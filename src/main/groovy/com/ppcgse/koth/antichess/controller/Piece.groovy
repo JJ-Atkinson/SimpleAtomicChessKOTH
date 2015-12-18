@@ -44,19 +44,21 @@ public abstract class Piece {
 
             def locations = []
 
-            loop:
+//            loop:
             while (new Location(x: nx, y: ny).isValid()) {
                 def field = fields[nx][ny]
                 def addLocation = {locations += new Location(x: nx, y: ny)}
 
-                switch (field.piece?.team) {
-                    case null: addLocation()
-                        break
-                    case {it == this.team.opposite()}:
-                        addLocation(); break loop
-                    case {it == this.team}:
-                        break loop
+                def fieldTeam = field.piece?.team
+                if (fieldTeam == null) {
+                    addLocation()
+                } else if (fieldTeam == this.team) {
+                    break
+                } else {
+                    addLocation()
+                    break
                 }
+
 
                 nx += xVec
                 ny += yVec
