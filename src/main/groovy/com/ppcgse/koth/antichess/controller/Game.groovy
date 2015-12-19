@@ -3,6 +3,7 @@ package com.ppcgse.koth.antichess.controller;
 import static com.ppcgse.koth.antichess.controller.GameResult.*;
 
 public class Game {
+    public final boolean DEBUG = false
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
     private Board board;
@@ -29,7 +30,7 @@ public class Game {
             makeTurn(players[i], players[(i + 1) % 2]);
             i = (i + 1) % 2;
 
-            println "game over? ${gameOver()}\n\n${'='*30}\n"
+            debugPrint "Game over? ${gameOver()}\n\n${'='*30}\n"
         }
         def whiteHasPieces = players[0].getPieces(board).isEmpty()
         def blackHasPieces = players[1].getPieces(board).isEmpty()
@@ -45,8 +46,8 @@ public class Game {
                 blackGameRes = DRAW
         }
 
-        println "Game between $players is done"
-        println "Result: White -> $whiteGameRes; Black -> $blackGameRes;"
+        debugPrint "Game between $players is done"
+        debugPrint "Result: White -> $whiteGameRes; Black -> $blackGameRes;"
 
         finished = true;
     }
@@ -65,15 +66,15 @@ public class Game {
         try {
             long start = System.currentTimeMillis();
             def validMoves = genValidMoves(player, enemy)
-            println "${player.team}s turn."
-            println "validMoves: $validMoves"
-            println "board:\n$board"
-            println "captureless turns: $turnsWithoutCaptures"
+            debugPrint "${player.team}s turn."
+            debugPrint "validMoves: $validMoves"
+            debugPrint "board:\n$board"
+            debugPrint "captureless turns: $turnsWithoutCaptures"
             Move move = player.getMove(new ReadOnlyBoard(board), enemy, validMoves);
-            println "chosen move: $move"
+            debugPrint "chosen move: $move"
 
-//            if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS)
-//                player.disqualify();
+            if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS && !DEBUG)
+                player.disqualify();
 
             if (validMoves.contains(move)) {
                 if (board.movePiece(player, move))
@@ -104,8 +105,8 @@ public class Game {
                     [piece, dests.findAll {board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team}]
                 }.findAll {it[1]}
 
-        println "Allmoves: $allMoves"
-        println "Attackmoves: $attackMoves"
+        debugPrint "Allmoves: $allMoves"
+        debugPrint "Attackmoves: $attackMoves"
 
         if (attackMoves.isEmpty())
             return allMoves.collect {
@@ -125,5 +126,10 @@ public class Game {
             }
         }
         return false;
+    }
+
+    def debugPrint(String out) {
+        if (DEBUG)
+            println out
     }
 }
