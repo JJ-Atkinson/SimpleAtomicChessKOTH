@@ -4,11 +4,13 @@ import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor;
+import groovy.transform.TupleConstructor
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 @EqualsAndHashCode
 @ToString(includeFields = true, excludes = ['metaClass'], includePackage = false)
 @TupleConstructor
+@Immutable
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Location {
     public int x;

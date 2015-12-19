@@ -4,10 +4,10 @@ public enum Color {
     WHITE, BLACK;
 
     public Color opposite() {
-        return this == WHITE ? BLACK : WHITE;
+        return this.next()
     }
 
     public String getInitial() {
-        return this.toString().charAt(0) + "";
+        return this.name().charAt(0) + "";
     }
 }
