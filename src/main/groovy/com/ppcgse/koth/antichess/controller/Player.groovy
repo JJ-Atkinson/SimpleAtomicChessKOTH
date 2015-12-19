@@ -1,6 +1,6 @@
 package com.ppcgse.koth.antichess.controller
 
-import groovy.transform.EqualsAndHashCode;
+import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode
 public abstract class Player {
@@ -31,9 +31,10 @@ public abstract class Player {
         return disqualified;
     }
 
-    public abstract Move getMove(Board board, Player enemy, Set<Move> validMoves);
+    public abstract Move getMove(ReadOnlyBoard board, Player enemy, Set<Move> validMoves);
 
-    public final String toString() {
-        return "Player " + getClass() + " (" + getTeam() + ")";
+    @Override
+    String toString() {
+        return getClass().getSimpleName() + '(' + team + ')'
     }
 }

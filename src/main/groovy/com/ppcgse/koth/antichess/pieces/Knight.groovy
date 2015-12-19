@@ -21,7 +21,10 @@ public class Knight extends Piece {
 
     @Override
     public Set<Location> getValidDestinationSet(Board board) {
-        def dirVectors = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [-1, 1], [1, -2], [-1, -2]]
+        def dirVectors = [[2, 1],   [2, -1],  // left
+                          [-1, 2],  [1, 2],   // up
+                          [-2, -1], [-2, 1],  // right
+                          [1, -2],  [-1, -2]] // down
         return dirVectors
                 .collect {
                     loc.plus(it[0], it[1])
