@@ -8,7 +8,6 @@ import com.ppcgse.koth.antichess.player.TestPlayer;
 
 public class Runner {
     private static final int GAMES_PER_PAIR = 10;
-    private final Class[] classes = [SimplePlayer.class, TestPlayer.class];
     private final Map<Class<? extends Player>, Integer> scores = new HashMap<>();
 
     public static void main(String... args) {
@@ -16,17 +15,21 @@ public class Runner {
     }
 
     public Runner() {
-        for (Class player : classes) {
+        for (Class player : PlayerFactory.players.keySet()) {
             scores.put(player, 0);
         }
     }
 
     public void runGames() {
 
-        for (int i = 0; i < classes.length - 1; i++) {
-            for (int j = i + 1; j < classes.length; j++) {
+        def classes = PlayerFactory.players.keySet()// as List<Class<? extends Player>>
+
+        for (int i = 0; i < classes.size() - 1; i++) {
+            for (int j = i + 1; j < classes.size(); j++) {
                 for (int k = 0; k < GAMES_PER_PAIR; k++) {
-                    runGame(classes[i], classes[j], k >= GAMES_PER_PAIR / 2);
+                    runGame(PlayerFactory.buildPlayer(classes[i]),
+                            PlayerFactory.buildPlayer(classes[j]),
+                            k >= GAMES_PER_PAIR / 2);
                 }
             }
         }
@@ -34,22 +37,21 @@ public class Runner {
         printScores();
     }
 
-    private void runGame(Class class1, Class class2, boolean switchSides) {
-        if (switchSides) { //switch sides
-            Class tempClass = class2;
-            class2 = class1;
-            class1 = tempClass;
+    private void runGame(Player p1, Player p2, boolean switchSides) {
+        if (switchSides) {
+            def tmp = p1
+            p1 = p2
+            p2 = tmp
         }
+
         try {
-            Player player1 = (Player) class1.newInstance();
-            Player player2 = (Player) class2.newInstance();
-            Game game = new Game(player1, player2);
+            Game game = new Game(p1, p2);
             game.run();
 
-            addResult(class1, game.getWhiteGameRes());
-            addResult(class2, game.getBlackGameRes());
+            addResult(p1.getClass(), game.getWhiteGameRes());
+            addResult(p2.getClass(), game.getBlackGameRes());
         } catch (Exception e) {
-            System.err.println("Error in game between " + class1 + " and " + class2);
+            System.err.println("Error in game between " + p1 + " and " + p2);
             e.printStackTrace()
         }
     }
