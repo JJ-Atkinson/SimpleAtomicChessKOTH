@@ -23,7 +23,7 @@ public abstract class Piece {
     protected def isValidMove = { Board board, Location test ->
         if (!test.isValid() || test == loc)
             return false
-        def field = board[test.x, test.y]
+        def field = board[test]
         return field.piece?.team != this.team
     }
 

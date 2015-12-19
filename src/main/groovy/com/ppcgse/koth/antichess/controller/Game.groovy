@@ -69,7 +69,7 @@ public class Game {
             println "validMoves: $validMoves"
             println "board:\n$board"
             println "captureless turns: $turnsWithoutCaptures"
-            Move move = player.getMove((Board) board.clone(), enemy, validMoves);
+            Move move = player.getMove(new ReadOnlyBoard(board), enemy, validMoves);
             println "chosen move: $move"
 
 //            if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS)
@@ -85,7 +85,7 @@ public class Game {
                 System.err.println("Valid moves $validMoves")
                 System.err.println("Chosen move $move")
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
             player.disqualify()
             System.err.println(player.getClass().getSimpleName() + " made and invalid move.")
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class Game {
                 .collect {pair ->
                     def piece = pair[0]
                     def dests = pair[1]
-                    [piece, dests.findAll {board.getFieldAtLoc(it)?.piece?.team == enemy.team}]
+                    [piece, dests.findAll {board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team}]
                 }.findAll {it[1]}
 
         println "Allmoves: $allMoves"
@@ -109,11 +109,11 @@ public class Game {
 
         if (attackMoves.isEmpty())
             return allMoves.collect {
-                Piece piece = it[0]
+                Piece piece = it[0] as Piece
                 return it[1].collect {loc -> new Move(piece, loc as Location)}}.flatten() as Set<Move>
         else
             return attackMoves.collect {
-                Piece piece = it[0]
+                Piece piece = it[0] as Piece
                 return it[1].collect {loc -> new Move(piece, loc as Location)}}.flatten() as Set<Move>
     }
 

@@ -1,15 +1,15 @@
 package com.ppcgse.koth.antichess.controller
 
-import groovy.transform.Immutable
-
-
 /**
  * Created by Jarrett on 12/19/15.
  */
 
-@Immutable
 class ReadOnlyBoard {
     private Board backing;
+
+    public ReadOnlyBoard(Board backing) {
+        this.backing = backing
+    }
 
     public Field getFieldAtLoc(Location loc) {
         return backing[loc].clone()

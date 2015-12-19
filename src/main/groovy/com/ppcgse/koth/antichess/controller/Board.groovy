@@ -76,7 +76,7 @@ public class Board {
     }
 
     private static boolean isHomeRow(Location loc) {
-        return (loc.x == 1 || loc.y == BOARD_LENGTH - 1)
+        return (loc.y == 1 || loc.y == BOARD_LENGTH - 1)
     }
 
     @Override
