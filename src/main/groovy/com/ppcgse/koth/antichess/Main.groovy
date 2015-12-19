@@ -10,9 +10,9 @@ import com.ppcgse.koth.antichess.player.TestPlayer;
  */
 public class Main {
     public static void main(String[] args) {
-//        println 'Running'
-//        new Runner().runGames();
-
-        new Game(new TestPlayer(), new SimplePlayer()).run()
+        println 'Running'
+        new Runner().runGames();
+//
+//        new Game(new TestPlayer(), new SimplePlayer()).run()
     }
 }
