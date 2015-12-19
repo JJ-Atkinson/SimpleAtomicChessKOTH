@@ -29,7 +29,7 @@ public class Game {
             makeTurn(players[i], players[(i + 1) % 2]);
             i = (i + 1) % 2;
 
-            println "game over? ${gameOver()}"
+            println "game over? ${gameOver()}\n\n${'='*30}\n"
         }
         def whiteHasPieces = players[0].getPieces(board).isEmpty()
         def blackHasPieces = players[1].getPieces(board).isEmpty()
@@ -67,7 +67,7 @@ public class Game {
             def validMoves = genValidMoves(player, enemy)
             println "${player.team}s turn."
             println "validMoves: $validMoves"
-            println "board:\n$board\n"
+            println "board:\n$board"
             println "captureless turns: $turnsWithoutCaptures"
             Move move = player.getMove((Board) board.clone(), enemy, validMoves);
             println "chosen move: $move"

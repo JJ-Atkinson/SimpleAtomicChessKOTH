@@ -1,23 +1,18 @@
 package com.ppcgse.koth.antichess.controller
 
-import groovy.transform.AutoClone
-import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.Immutable
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(includes = ['x', 'y'])
 @ToString(includeFields = true, excludes = ['metaClass'], includePackage = false)
-@TupleConstructor
 @Immutable
-@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Location {
-    public int x;
-    public int y;
+    int x;
+    int y;
 
     public Location plus(int offsetX, int offsetY) {
-        return new Location(x: x + offsetX, y: y + offsetY)
+        return new Location(x + offsetX, y + offsetY)
     }
 
     public boolean isValid() {

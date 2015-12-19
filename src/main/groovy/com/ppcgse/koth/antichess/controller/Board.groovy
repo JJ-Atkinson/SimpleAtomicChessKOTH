@@ -26,7 +26,7 @@ public class Board {
     void initialize() {
         for (int x = 0; x < BOARD_LENGTH; x++) {
             for (int y = 0; y < BOARD_LENGTH; y++) {
-                def loc = new Location(x: x, y: y)
+                def loc = new Location(x, y)
                 fields[loc] = new Field(loc);
             }
         }
@@ -42,10 +42,10 @@ public class Board {
                  Rook.class];
 
         for (int i = 0; i < BOARD_LENGTH; i++) {
-            fields[new Location(x: i, y: 0)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(x: 0, y: i)));
-            fields[new Location(x: i, y: 1)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(x: 1, y: i)));
-            fields[new Location(x: i, y: 6)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(x: 6, y: i)));
-            fields[new Location(x: i, y: 0)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(x: 7, y: i)));
+            fields[new Location(i, 0)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(i, 0)));
+            fields[new Location(i, 1)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(i, 1)));
+            fields[new Location(i, 6)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(i, 6)));
+            fields[new Location(i, 7)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(i, 7)));
         }
     }
 
@@ -57,18 +57,18 @@ public class Board {
         if (!dest.isValid())
             return false
 
-        def capture = this[dest.x, dest.y].hasPiece();
+        def capture = this[dest].hasPiece();
         // upgrade pawn
         if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
             if (player.pieceUpgradeType == null)
                 throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
             def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
-            this[dest.x, dest.y].setPiece(newPiece);
+            this[dest].setPiece(newPiece);
         } else
-            this[dest.x, dest.y].setPiece(piece);
+            this[dest].setPiece(piece);
 
         //remove piece on old field
-        this[piece.getLoc().x, piece.getLoc().y].setPiece(null);
+        this[piece.getLoc()].setPiece(null);
         //update position
         piece.setLoc(dest);
 
@@ -76,7 +76,7 @@ public class Board {
     }
 
     private static boolean isHomeRow(Location loc) {
-        return (loc.x == 0 || loc.y == BOARD_LENGTH - 1)
+        return (loc.x == 1 || loc.y == BOARD_LENGTH - 1)
     }
 
     @Override
