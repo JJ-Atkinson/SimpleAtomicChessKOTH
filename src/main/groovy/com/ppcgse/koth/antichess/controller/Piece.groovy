@@ -23,14 +23,13 @@ public abstract class Piece {
     protected def isValidMove = { Board board, Location test ->
         if (!test.isValid() || test == loc)
             return false
-        def field = board.fields[test.x][test.y]
+        def field = board[test.x, test.y]
         return field.piece?.team != this.team
     }
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
     protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
-        def fields = board.fields
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -39,8 +38,12 @@ public abstract class Piece {
 
             def locations = []
 
+//            println this
+//            println board
+//            println directionVectors
+
             while (new Location(x: nx, y: ny).isValid()) {
-                def field = fields[nx][ny]
+                def field = board[nx, ny]
                 def addLocation = {locations += new Location(x: nx, y: ny)}
 
                 def fieldTeam = field.piece?.team

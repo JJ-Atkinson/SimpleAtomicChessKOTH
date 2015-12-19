@@ -10,7 +10,7 @@ public abstract class Player {
 
     public final List<Piece> getPieces(Board board) {
         (board.fields
-                .flatten() as List<Field>)
+                .values() as List<Field>)
                 .collect {Field f -> f.piece}
                 .findAll {Piece p -> p?.team == team}
     }

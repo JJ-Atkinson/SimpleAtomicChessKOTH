@@ -15,19 +15,19 @@ import com.ppcgse.koth.antichess.pieces.Bishop
 @TupleConstructor
 @AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Board {
-    public final ArrayList<ArrayList<Field>> fields;
+    public final Map<Location, Field> fields;
     public static final int BOARD_LENGTH = 8;
 
     public Board() {
-        fields = ([{ new ArrayList<Field>() }] * BOARD_LENGTH)*.call()
+        fields = [:]
         initialize()
     }
 
     void initialize() {
-        for (int i = 0; i < BOARD_LENGTH; i++) {
-            for (int j = 0; j < BOARD_LENGTH; j++) {
-                Color color = (i + j) % 2 == 0 ? Color.BLACK : Color.WHITE;
-                fields[i][j] = new Field(new Location(x: i, y: j), color);
+        for (int x = 0; x < BOARD_LENGTH; x++) {
+            for (int y = 0; y < BOARD_LENGTH; y++) {
+                def loc = new Location(x: x, y: y)
+                fields[loc] = new Field(loc);
             }
         }
 
@@ -42,10 +42,10 @@ public class Board {
                  Rook.class];
 
         for (int i = 0; i < BOARD_LENGTH; i++) {
-            fields[i][0].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(x: 0, y: i)));
-            fields[i][1].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(x: 1, y: i)));
-            fields[i][6].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(x: 6, y: i)));
-            fields[i][7].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(x: 7, y: i)));
+            fields[new Location(x: i, y: 0)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.WHITE, new Location(x: 0, y: i)));
+            fields[new Location(x: i, y: 1)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.WHITE, new Location(x: 1, y: i)));
+            fields[new Location(x: i, y: 6)].setPiece(PieceFactory.buildPiece(Pawn.class, Color.BLACK, new Location(x: 6, y: i)));
+            fields[new Location(x: i, y: 0)].setPiece(PieceFactory.buildPiece(baseOrder[i], Color.BLACK, new Location(x: 7, y: i)));
         }
     }
 
@@ -57,18 +57,18 @@ public class Board {
         if (!dest.isValid())
             return false
 
-        def capture = fields[dest.x][dest.y].hasPiece();
+        def capture = this[dest.x, dest.y].hasPiece();
         // upgrade pawn
         if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
-            if (player.pieceUpgradeType.clazz == null)
+            if (player.pieceUpgradeType == null)
                 throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
             def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
-            fields[dest.x][dest.y].setPiece(newPiece);
+            this[dest.x, dest.y].setPiece(newPiece);
         } else
-            fields[dest.x][dest.y].setPiece(piece);
+            this[dest.x, dest.y].setPiece(piece);
 
         //remove piece on old field
-        fields[piece.getLoc().x][piece.getLoc().y].setPiece(null);
+        this[piece.getLoc().x, piece.getLoc().y].setPiece(null);
         //update position
         piece.setLoc(dest);
 
@@ -85,7 +85,9 @@ public class Board {
 
         for (int j = BOARD_LENGTH - 1; j >= 0; j--) {
             for (int i = 0; i < BOARD_LENGTH; i++) {
-                builder.append(fields[i][j]);
+                def color = this[i, j].piece?.team
+                def out = this[i, j].piece?.type?.getInitial() ?: "-"
+                builder.append(color == Color.BLACK ? out : out.toLowerCase());
             }
             builder.append("\n");
         }
@@ -93,6 +95,18 @@ public class Board {
     }
 
     public Field getFieldAtLoc(Location loc) {
-        return fields[loc.x][loc.y]
+        return fields[loc]
+    }
+
+    public Field getAt(Location loc) {
+        return getFieldAtLoc(loc)
+    }
+
+    public Field getFieldAtLoc(int x, int y) {
+        return getFieldAtLoc(new Location(x: x, y: y))
+    }
+
+    public Field getAt(int x, int y) {
+        return getFieldAtLoc(x, y)
     }
 }

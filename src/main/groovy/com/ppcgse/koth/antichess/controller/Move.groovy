@@ -9,14 +9,13 @@ import groovy.transform.TupleConstructor
 /**
  * Created by Jarrett on 12/16/15.
  */
-@ToString(includeNames = true, includeFields = true, excludes = ['metaClass'], includePackage = false)
+@ToString(includeFields = true, excludes = ['metaClass'], includePackage = false)
 @EqualsAndHashCode
+@TupleConstructor(includes = ['piece', 'destination'])
 @AutoClone(style = AutoCloneStyle.SIMPLE)
-@TupleConstructor
 class Move {
     Piece piece
     Location destination
-    PieceUpgradeType upgradeType = null
 
     public boolean isValid(Board board, Player player) {
         if (piece == null || destination == null || player.getTeam() != piece.getTeam()) {
