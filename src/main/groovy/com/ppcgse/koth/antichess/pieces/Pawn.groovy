@@ -24,12 +24,29 @@ public class Pawn extends Piece {
     public Set<Location> getValidDestinationSet(Board board) {
         int direction = getTeam() == Color.WHITE ? 1 : -1;
 
-        ([loc.plus(1, direction),
-          loc.plus(-1, direction),
-          loc.plus(0, direction)]
-          + (canDoubleMove() ? [loc.plus(0, direction*2)] : []))
-                .findAll (isValidMove.curry(board))
-                .findAll {board.getFieldAtLoc(it).piece?.team != team} as Set<Location>
+        getAttackMoves(board, direction) + getForwardMoves(board, direction)
+    }
+
+    private Set<Location> getAttackMoves(Board board, int direction) {
+
+        def left = loc.plus(-1, direction)
+        def right = loc.plus(1, direction)
+
+        [left, right].findAll {isValidMove(board, it) && board[it].piece?.team == team.opposite()}
+    }
+
+    private Set<Location> getForwardMoves(Board board, int direction) {
+        def base = loc.plus(0, direction)
+        def doubMove = loc.plus(0, direction*2)
+        if (isValidMove(board, base)) {
+            if (canDoubleMove() == false)
+                return [base]
+            else if (isValidMove(board, doubMove))
+                return [base, doubMove]
+            else
+                return [base]
+        } else
+            return []
     }
 
     private boolean canDoubleMove() {
