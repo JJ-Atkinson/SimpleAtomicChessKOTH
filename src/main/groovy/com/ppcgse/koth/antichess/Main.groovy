@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         println 'Running'
         new Runner().runGames();
-
+//
 //        new Game(new OnePlayBot(), new SacrificeBot()).run()
     }
 }
