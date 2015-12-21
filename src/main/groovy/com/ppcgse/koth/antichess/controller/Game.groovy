@@ -1,9 +1,12 @@
-package com.ppcgse.koth.antichess.controller;
+package com.ppcgse.koth.antichess.controller
+
+import java.awt.image.PixelInterleavedSampleModel;
 
 import static com.ppcgse.koth.antichess.controller.GameResult.*;
 
 public class Game {
-    public final boolean DEBUG = false
+    public final boolean DEBUG = true
+    public final boolean SHOW_GAMES = true
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
     private Board board;
@@ -24,13 +27,17 @@ public class Game {
 
     public void run() {
         if (finished) throw new IllegalStateException("You can't rerun a game");
+        debugPrint "Game started. Players: $players"
 
         int i = 0;
         while (!gameOver()) {
-            makeTurn(players[i], players[(i + 1) % 2]);
+            def hadMove = makeTurn(players[i], players[(i + 1) % 2]);
             i = (i + 1) % 2;
 
-            debugPrint "Game over? ${gameOver()}\n\n${'='*30}\n"
+            debugPrint "Game over? ${gameOver() || !hadMove}\n\n${'='*30}\n"
+
+            if (!hadMove)
+                break
         }
         def whiteHasPieces = players[0].getPieces(board).isEmpty()
         def blackHasPieces = players[1].getPieces(board).isEmpty()
@@ -45,9 +52,10 @@ public class Game {
                 whiteGameRes = DRAW
                 blackGameRes = DRAW
         }
-
-        debugPrint "Game between $players is done"
-        debugPrint "Result: White -> $whiteGameRes; Black -> $blackGameRes;"
+        if (DEBUG || SHOW_GAMES) {
+            println "Game between $players is done"
+            println "Result: White -> $whiteGameRes; Black -> $blackGameRes;"
+        }
 
         finished = true;
     }
@@ -62,10 +70,17 @@ public class Game {
         return blackGameRes;
     }
 
-    private void makeTurn(Player player, Player enemy) {
+    /**
+     * Return false if player has no moves and he wins
+     * @param player
+     * @param enemy
+     * @return
+     */
+    private boolean makeTurn(Player player, Player enemy) {
         try {
             long start = System.currentTimeMillis();
             def validMoves = genValidMoves(player, enemy)
+            if (!validMoves) return false
             debugPrint "${player.team}s turn."
             debugPrint "validMoves: $validMoves"
             debugPrint "board:\n$board"
@@ -94,6 +109,7 @@ public class Game {
             System.err.println("Exception while moving " + player);
             e.printStackTrace()
         }
+        return true
     }
 
     private Set<Move> genValidMoves(Player player, Player enemy) {

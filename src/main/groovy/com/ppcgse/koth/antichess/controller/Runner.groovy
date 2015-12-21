@@ -24,26 +24,20 @@ public class Runner {
 
         def classes = PlayerFactory.players.keySet()// as List<Class<? extends Player>>
 
-        for (int i = 0; i < classes.size() - 1; i++) {
-            for (int j = i + 1; j < classes.size(); j++) {
-                for (int k = 0; k < GAMES_PER_PAIR; k++) {
-                    runGame(PlayerFactory.buildPlayer(classes[i]),
-                            PlayerFactory.buildPlayer(classes[j]),
-                            k >= GAMES_PER_PAIR / 2);
+        [classes, classes]
+                .combinations()
+                .findAll { it[0] != it[1] }
+                .multiply(GAMES_PER_PAIR/2)
+                .sort()
+                .each {
+                    runGame(PlayerFactory.buildPlayer(it[0]),
+                            PlayerFactory.buildPlayer(it[1]));
                 }
-            }
-        }
 
         printScores();
     }
 
-    private void runGame(Player p1, Player p2, boolean switchSides) {
-        if (switchSides) {
-            def tmp = p1
-            p1 = p2
-            p2 = tmp
-        }
-
+    private void runGame(Player p1, Player p2) {
         try {
             Game game = new Game(p1, p2);
             game.run();
