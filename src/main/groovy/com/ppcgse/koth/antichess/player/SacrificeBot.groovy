@@ -1,14 +1,6 @@
 package com.ppcgse.koth.antichess.player
 
-import com.ppcgse.koth.antichess.controller.Board
-import com.ppcgse.koth.antichess.controller.Color
-import com.ppcgse.koth.antichess.controller.Location
-import com.ppcgse.koth.antichess.controller.Move
-import com.ppcgse.koth.antichess.controller.Piece
-import com.ppcgse.koth.antichess.controller.PieceType
-import com.ppcgse.koth.antichess.controller.PieceUpgradeType
-import com.ppcgse.koth.antichess.controller.Player
-import com.ppcgse.koth.antichess.controller.ReadOnlyBoard
+import com.ppcgse.koth.antichess.controller.*
 
 import java.util.concurrent.ThreadLocalRandom
 
@@ -23,7 +15,7 @@ class SacrificeBot extends Player {
     Move getMove(ReadOnlyBoard board, Player enemy, Set<Move> validMoves) {
         def realBoard = board.cloneBoard()
         def enemyPieces = enemy.getPieces(realBoard)
-        def pawnMoves = getPawnsMoves(realBoard, enemyPieces)
+        def pawnMoves = getPawnsMoves(enemyPieces)
         def enemyPlayerValidMoves = (enemyPieces
                                         .collect { it.getValidDestinationSet(realBoard) }
                                         .flatten() as List<Location>)
@@ -42,7 +34,7 @@ class SacrificeBot extends Player {
         return validMoves[ThreadLocalRandom.current().nextInt(validMoves.size())];
     }
 
-    def getPawnsMoves(Board board, List<Piece> allPieces) {
+    def getPawnsMoves(List<Piece> allPieces) {
         def direction = getTeam() == Color.BLACK ? 1 : -1;
         def pawns = allPieces.findAll {it.type == PieceType.PAWN}
         def pawnAttacks = (pawns.collect {

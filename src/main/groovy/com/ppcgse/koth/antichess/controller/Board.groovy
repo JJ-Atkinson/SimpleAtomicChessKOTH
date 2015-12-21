@@ -1,15 +1,10 @@
 package com.ppcgse.koth.antichess.controller
 
+import com.ppcgse.koth.antichess.pieces.*
 import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.TupleConstructor
-import com.ppcgse.koth.antichess.pieces.King
-import com.ppcgse.koth.antichess.pieces.Knight
-import com.ppcgse.koth.antichess.pieces.Pawn
-import com.ppcgse.koth.antichess.pieces.Queen
-import com.ppcgse.koth.antichess.pieces.Rook
-import com.ppcgse.koth.antichess.pieces.Bishop
 
 @EqualsAndHashCode
 @TupleConstructor
@@ -17,7 +12,7 @@ import com.ppcgse.koth.antichess.pieces.Bishop
 public class Board {
     public Map<Location, Field> fields;
     public static final int BOARD_LENGTH = 8;
-    public static final boolean USE_UTF8_TO_STRING = false
+    public static final boolean USE_UTF8_TO_STRING = true
 
     public Board() {
         fields = [:]
@@ -88,7 +83,7 @@ public class Board {
             for (int i = 0; i < BOARD_LENGTH; i++) {
                 def color = this[i, j].piece?.team
                 def out = USE_UTF8_TO_STRING ?
-                        (this[i, j].piece?.type?.getUtfChr(this[i, j].piece?.team) ?: '\u2014') :
+                        (this[i, j].piece?.type?.getUtfChr(color?.opposite()) ?: '\u2014') :
                         (this[i, j].piece?.type?.getShortStr() ?: '-')
                 builder.append(color == Color.BLACK ? out : out.toLowerCase());
             }
