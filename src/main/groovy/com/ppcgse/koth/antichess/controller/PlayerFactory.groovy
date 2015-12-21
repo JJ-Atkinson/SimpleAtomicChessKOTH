@@ -1,8 +1,8 @@
 package com.ppcgse.koth.antichess.controller
 
 import com.ppcgse.koth.antichess.player.SacrificeBot
-import com.ppcgse.koth.antichess.player.SimplePlayer
-import com.ppcgse.koth.antichess.player.TestPlayer
+import com.ppcgse.koth.antichess.player.SimpleBot
+import com.ppcgse.koth.antichess.player.TestBot
 
 import java.util.function.Supplier;
 
@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 public class PlayerFactory {
     public static final HashMap<Class<? extends Player>, Supplier<Player>> players =
             new HashMap<Class<? extends Player>, Supplier<Player>>() {{
-                put(TestPlayer.class,   { new TestPlayer() })
-                put(SimplePlayer.class, { new SimplePlayer() } )
+                put(TestBot.class, { new TestBot() })
+                put(SimpleBot.class, { new SimpleBot() })
                 put(SacrificeBot.class, { new SacrificeBot() } )
 //                put(YourBot.class, { new YourBot() } )
             }};
