@@ -119,9 +119,6 @@ public class Game {
                     [piece, dests.findAll {board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team}]
                 }.findAll {it[1]}
 
-        debugPrint "Allmoves: $allMoves"
-        debugPrint "Attackmoves: $attackMoves"
-
         if (attackMoves.isEmpty())
             return allMoves.collect {
                 Piece piece = it[0] as Piece
