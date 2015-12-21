@@ -38,10 +38,12 @@ public class Pawn extends Piece {
     private Set<Location> getForwardMoves(Board board, int direction) {
         def base = loc.plus(0, direction)
         def doubMove = loc.plus(0, direction*2)
-        if (isValidMove(board, base)) {
+        def isValMove = {Location loc -> isValidMove(board, loc) && board[loc].piece == null}
+
+        if (isValMove(base)) {
             if (canDoubleMove() == false)
                 return [base]
-            else if (isValidMove(board, doubMove))
+            else if (isValMove(doubMove))
                 return [base, doubMove]
             else
                 return [base]
