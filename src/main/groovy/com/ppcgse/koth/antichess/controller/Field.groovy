@@ -4,18 +4,26 @@ import groovy.transform.AutoClone
 import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor
 
 /**
  * Created by Jarrett on 12/16/15.
  */
 @EqualsAndHashCode
-@TupleConstructor
 @ToString(includePackage = false)
-@AutoClone(style = AutoCloneStyle.SIMPLE)
+@AutoClone(style = AutoCloneStyle.COPY_CONSTRUCTOR)
 class Field {
-    final Location pos
+    final Location loc
     Piece piece
+
+    public Field(Field other) {
+        this.loc = other.loc
+        piece = other.piece?.clone()
+    }
+
+    public Field(Location loc) {
+        this.loc = loc
+        this.piece = null
+    }
 
     public boolean hasPiece() {return piece != null}
 }
