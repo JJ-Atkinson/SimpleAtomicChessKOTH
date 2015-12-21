@@ -32,23 +32,23 @@ public class Game {
             def hadMove = makeTurn(players[i], players[(i + 1) % 2]);
             i = (i + 1) % 2;
 
-            debugPrint "Game over? ${gameOver() || !hadMove}\n\n${'='*30}\n"
+            debugPrint "Game over? ${gameOver() || !hadMove}\n\n${'=' * 30}\n"
 
             if (!hadMove)
                 break
         }
-        def whiteHasPieces = players[0].getPieces(board).isEmpty()
-        def blackHasPieces = players[1].getPieces(board).isEmpty()
+        def whiteHasPieces = players.find { it.team == Color.WHITE }.getPieces(board).size() > 0
+        def blackHasPieces = players.find { it.team == Color.BLACK }.getPieces(board).size() > 0
 
         if (whiteHasPieces == false) {
-                whiteGameRes = WIN
-                blackGameRes = LOSE
+            whiteGameRes = WIN
+            blackGameRes = LOSE
         } else if (blackHasPieces == false) {
-                whiteGameRes = LOSE
-                blackGameRes = WIN
+            whiteGameRes = LOSE
+            blackGameRes = WIN
         } else {
-                whiteGameRes = DRAW
-                blackGameRes = DRAW
+            whiteGameRes = DRAW
+            blackGameRes = DRAW
         }
         if (DEBUG || SHOW_GAMES) {
             println "Game between $players is done"
@@ -111,22 +111,24 @@ public class Game {
     }
 
     private Set<Move> genValidMoves(Player player, Player enemy) {
-        def allMoves = player.getPieces(board).collect {[it, it.getValidDestinationSet(board)]}
+        def allMoves = player.getPieces(board).collect { [it, it.getValidDestinationSet(board)] }
         def attackMoves = allMoves
-                .collect {pair ->
-                    def piece = pair[0]
-                    def dests = pair[1]
-                    [piece, dests.findAll {board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team}]
-                }.findAll {it[1]}
+                .collect { pair ->
+            def piece = pair[0]
+            def dests = pair[1]
+            [piece, dests.findAll { board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team }]
+        }.findAll { it[1] }
 
         if (attackMoves.isEmpty())
             return allMoves.collect {
                 Piece piece = it[0] as Piece
-                return it[1].collect {loc -> new Move(piece, loc as Location)}}.flatten() as Set<Move>
+                return it[1].collect { loc -> new Move(piece, loc as Location) }
+            }.flatten() as Set<Move>
         else
             return attackMoves.collect {
                 Piece piece = it[0] as Piece
-                return it[1].collect {loc -> new Move(piece, loc as Location)}}.flatten() as Set<Move>
+                return it[1].collect { loc -> new Move(piece, loc as Location) }
+            }.flatten() as Set<Move>
     }
 
     public boolean gameOver() {
