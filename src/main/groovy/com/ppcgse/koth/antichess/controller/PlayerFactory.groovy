@@ -1,5 +1,6 @@
 package com.ppcgse.koth.antichess.controller
 
+import com.ppcgse.koth.antichess.player.SacrificeBot
 import com.ppcgse.koth.antichess.player.SimplePlayer
 import com.ppcgse.koth.antichess.player.TestPlayer
 
@@ -13,6 +14,7 @@ public class PlayerFactory {
             new HashMap<Class<? extends Player>, Supplier<Player>>() {{
                 put(TestPlayer.class,   { new TestPlayer() })
                 put(SimplePlayer.class, { new SimplePlayer() } )
+                put(SacrificeBot.class, { new SacrificeBot() } )
 //                put(YourBot.class, { new YourBot() } )
             }};
 

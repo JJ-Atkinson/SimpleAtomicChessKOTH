@@ -11,6 +11,14 @@ class ReadOnlyBoard {
         this.backing = backing
     }
 
+    /**
+     * Use sparingly
+     * @return
+     */
+    public Board cloneBoard() {
+        backing.clone()
+    }
+
     public Field getFieldAtLoc(Location loc) {
         return backing[loc].clone()
     }
