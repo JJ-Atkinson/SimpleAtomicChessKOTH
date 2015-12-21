@@ -13,10 +13,11 @@ import com.ppcgse.koth.antichess.pieces.Bishop
 
 @EqualsAndHashCode
 @TupleConstructor
-@AutoClone(style = AutoCloneStyle.SIMPLE)
+@AutoClone(style = AutoCloneStyle.CLONE)
 public class Board {
-    public final Map<Location, Field> fields;
+    public Map<Location, Field> fields;
     public static final int BOARD_LENGTH = 8;
+    public static final boolean USE_UTF8_TO_STRING = false
 
     public Board() {
         fields = [:]
@@ -86,7 +87,9 @@ public class Board {
         for (int j = BOARD_LENGTH - 1; j >= 0; j--) {
             for (int i = 0; i < BOARD_LENGTH; i++) {
                 def color = this[i, j].piece?.team
-                def out = this[i, j].piece?.type?.getInitial() ?: "-"
+                def out = USE_UTF8_TO_STRING ?
+                        (this[i, j].piece?.type?.getUtfChr(this[i, j].piece?.team) ?: '\u2014') :
+                        (this[i, j].piece?.type?.getShortStr() ?: '-')
                 builder.append(color == Color.BLACK ? out : out.toLowerCase());
             }
             builder.append("\n");

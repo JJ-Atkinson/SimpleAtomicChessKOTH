@@ -5,7 +5,6 @@ import groovy.transform.Immutable
 import groovy.transform.ToString
 
 @EqualsAndHashCode(includes = ['x', 'y'])
-@ToString(includeFields = true, excludes = ['metaClass'], includePackage = false)
 @Immutable
 public class Location {
     int x;
@@ -18,5 +17,10 @@ public class Location {
     public boolean isValid() {
         int boardLength = Board.BOARD_LENGTH;
         return x >= 0 && y >= 0 && x < boardLength && y < boardLength
+    }
+
+    @Override
+    String toString() {
+        return "Loc($x, $y)"
     }
 }
