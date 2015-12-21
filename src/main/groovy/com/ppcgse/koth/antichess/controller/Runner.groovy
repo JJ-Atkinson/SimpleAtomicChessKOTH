@@ -1,10 +1,4 @@
-package com.ppcgse.koth.antichess.controller;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import com.ppcgse.koth.antichess.player.SimplePlayer;
-import com.ppcgse.koth.antichess.player.TestPlayer;
+package com.ppcgse.koth.antichess.controller
 
 public class Runner {
     private static final int GAMES_PER_PAIR = 10;

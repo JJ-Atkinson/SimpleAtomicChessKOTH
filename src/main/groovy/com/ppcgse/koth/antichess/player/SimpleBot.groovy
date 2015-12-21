@@ -1,14 +1,11 @@
 package com.ppcgse.koth.antichess.player
 
-import com.ppcgse.koth.antichess.controller.PieceUpgradeType;
-
-import com.ppcgse.koth.antichess.controller.Board;
-import com.ppcgse.koth.antichess.controller.Player;
 import com.ppcgse.koth.antichess.controller.Move
+import com.ppcgse.koth.antichess.controller.PieceUpgradeType
+import com.ppcgse.koth.antichess.controller.Player
 import com.ppcgse.koth.antichess.controller.ReadOnlyBoard
-import groovy.transform.ToString;
 
-public class SimplePlayer extends Player {
+public class SimpleBot extends Player {
 
     {pieceUpgradeType = PieceUpgradeType.ROOK}
 

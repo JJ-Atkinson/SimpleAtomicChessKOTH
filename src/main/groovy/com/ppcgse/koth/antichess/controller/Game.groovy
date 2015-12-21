@@ -1,11 +1,9 @@
 package com.ppcgse.koth.antichess.controller
 
-import java.awt.image.PixelInterleavedSampleModel;
-
 import static com.ppcgse.koth.antichess.controller.GameResult.*;
 
 public class Game {
-    public final boolean DEBUG = true
+    public final boolean DEBUG = false
     public final boolean SHOW_GAMES = true
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
