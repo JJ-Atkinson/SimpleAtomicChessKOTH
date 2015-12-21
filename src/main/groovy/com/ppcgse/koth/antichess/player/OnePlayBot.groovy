@@ -5,7 +5,7 @@ import com.ppcgse.koth.antichess.controller.PieceUpgradeType
 import com.ppcgse.koth.antichess.controller.Player
 import com.ppcgse.koth.antichess.controller.ReadOnlyBoard
 
-public class SimpleBot extends Player {
+public class OnePlayBot extends Player {
 
     {pieceUpgradeType = PieceUpgradeType.ROOK}
 
