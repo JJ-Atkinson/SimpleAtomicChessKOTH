@@ -8,7 +8,7 @@ import groovy.transform.TupleConstructor
 
 @EqualsAndHashCode
 @TupleConstructor
-@AutoClone(style = AutoCloneStyle.CLONE)
+@AutoClone(style = AutoCloneStyle.SIMPLE)
 public class Board {
     public Map<Location, Field> fields;
     public static final int BOARD_LENGTH = 8;
