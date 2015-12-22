@@ -3,7 +3,7 @@ package com.ppcgse.koth.antichess.controller
 import static com.ppcgse.koth.antichess.controller.GameResult.*
 
 public class Game {
-    public final boolean DEBUG = true
+    public final boolean DEBUG = false
     public final boolean SHOW_GAMES = true
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
@@ -70,6 +70,8 @@ public class Game {
 
     /**
      * Return false if player has no moves and he wins
+     *
+     * (note to self: this is needed in case a pawn is stuck and he is the last piece)
      * @param player
      * @param enemy
      * @return
