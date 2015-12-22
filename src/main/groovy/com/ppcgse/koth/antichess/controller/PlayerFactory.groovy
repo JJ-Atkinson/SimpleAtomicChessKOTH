@@ -1,5 +1,6 @@
 package com.ppcgse.koth.antichess.controller
 
+import com.ppcgse.koth.antichess.player.MeasureBot
 import com.ppcgse.koth.antichess.player.OnePlayBot
 import com.ppcgse.koth.antichess.player.RandomBot
 import com.ppcgse.koth.antichess.player.SacrificeBot
@@ -15,6 +16,7 @@ public class PlayerFactory {
                 put(RandomBot.class, { new RandomBot() })
                 put(OnePlayBot.class, { new OnePlayBot() })
                 put(SacrificeBot.class, { new SacrificeBot() } )
+                put(MeasureBot.class, { new MeasureBot() })
 //                put(YourBot.class, { new YourBot() } )
             }};
 
