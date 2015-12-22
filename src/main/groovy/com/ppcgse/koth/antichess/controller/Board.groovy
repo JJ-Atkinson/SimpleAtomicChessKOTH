@@ -8,7 +8,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 public class Board {
     public static final int BOARD_LENGTH = 8;
-    public static final boolean USE_UTF8_TO_STRING = false
+    public static boolean USE_UTF8_TO_STRING = false
 
     private final Map<Location, Field> fields
 
