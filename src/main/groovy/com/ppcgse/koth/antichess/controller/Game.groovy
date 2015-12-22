@@ -3,7 +3,7 @@ package com.ppcgse.koth.antichess.controller
 import static com.ppcgse.koth.antichess.controller.GameResult.*;
 
 public class Game {
-    public final boolean DEBUG = false
+    public final boolean DEBUG = true
     public final boolean SHOW_GAMES = true
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
@@ -83,14 +83,16 @@ public class Game {
             debugPrint "validMoves: $validMoves"
             debugPrint "board:\n$board"
             debugPrint "captureless turns: $turnsWithoutCaptures"
-            Move move = player.getMove(new ReadOnlyBoard(board), enemy, validMoves);
+            Move move = player.getMove(board, enemy, validMoves);
             debugPrint "chosen move: $move"
 
             if ((System.currentTimeMillis() - start) > MAX_MILLISECONDS && !DEBUG)
                 player.disqualify();
 
+            def newBoard = board.movePiece(player, move)
+
             if (validMoves.contains(move)) {
-                if (board.movePiece(player, move))
+                if (wasCapture(board, newBoard))
                     turnsWithoutCaptures = -1;
                 turnsWithoutCaptures++;
             } else {
@@ -99,6 +101,8 @@ public class Game {
                 System.err.println("Valid moves $validMoves")
                 System.err.println("Chosen move $move")
             }
+
+            board = newBoard
         } catch (IllegalArgumentException ignored) {
             player.disqualify()
             System.err.println(player.getClass().getSimpleName() + " made and invalid move.")
@@ -108,6 +112,18 @@ public class Game {
             e.printStackTrace()
         }
         return true
+    }
+
+    private boolean wasCapture(Board oldBoard, Board newBoard) {
+        def otherFields = newBoard.fields
+        def otherPieceCount = otherFields.inject(0) {
+            int acc, Location k, Field v -> v.hasPiece() ? acc + 1 : acc
+        }
+        def myPieceCount = oldBoard.inject(0) {
+            int acc, Location k, Field v -> v.hasPiece() ? acc + 1 : acc
+        }
+
+        return otherPieceCount != myPieceCount
     }
 
     private Set<Move> genValidMoves(Player player, Player enemy) {

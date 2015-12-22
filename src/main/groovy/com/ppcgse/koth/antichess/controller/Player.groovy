@@ -31,7 +31,7 @@ public abstract class Player {
         return disqualified;
     }
 
-    public abstract Move getMove(ReadOnlyBoard board, Player enemy, Set<Move> validMoves);
+    public abstract Move getMove(Board board, Player enemy, Set<Move> validMoves);
 
     @Override
     String toString() {
