@@ -27,7 +27,7 @@ public abstract class Piece {
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
-    protected def genValidDests = { Board board, List<List<Integer>> directionVectors ->
+    protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -38,7 +38,7 @@ public abstract class Piece {
 
             while (new Location(x: nx, y: ny).isValid()) {
                 def field = board[nx, ny]
-                def addLocation = {locations += new Location(x: nx, y: ny)}
+                def addLocation = { locations += new Location(x: nx, y: ny) }
 
                 def fieldTeam = field.piece?.team
                 if (fieldTeam == null) {
@@ -55,5 +55,5 @@ public abstract class Piece {
             }
             locations
         }.flatten() as Set<Location>
-    }.memoize()
+    }
 }
