@@ -12,7 +12,7 @@ class SacrificeBot extends Player {
     {pieceUpgradeType = PieceUpgradeType.ROOK}
 
     @Override
-    Move getMove(ReadOnlyBoard board, Player enemy, Set<Move> validMoves) {
+    Move getMove(Board board, Player enemy, Set<Move> validMoves) {
         def realBoard = board.cloneBoard()
         def enemyPieces = enemy.getPieces(realBoard)
         def pawnMoves = getPawnsMoves(enemyPieces)

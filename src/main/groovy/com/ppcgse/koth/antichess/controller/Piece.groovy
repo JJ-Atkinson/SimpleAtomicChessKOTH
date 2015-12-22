@@ -1,24 +1,22 @@
 package com.ppcgse.koth.antichess.controller
 
-import groovy.transform.AutoClone
-import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor
 
 @ToString(includeFields = true, excludes = ['metaClass', 'isValidMove'], includePackage = false)
 @EqualsAndHashCode
-@AutoClone(style = AutoCloneStyle.SIMPLE)
 public abstract class Piece {
     final Color team;
-    final PieceType type;
-    Location loc;
 
-    Piece(Color team, Location loc, PieceType type) {
-        this.loc = loc
+    Piece(Color team, PieceType type, Location loc) {
         this.team = team
         this.type = type
+        this.loc = loc
     }
+
+
+    final PieceType type;
+    final Location loc;
 
     protected def isValidMove = { Board board, Location test ->
         if (!test.isValid() || test == loc)
@@ -29,7 +27,7 @@ public abstract class Piece {
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
-    protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
+    protected def genValidDests = { Board board, List<List<Integer>> directionVectors ->
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -37,10 +35,6 @@ public abstract class Piece {
             def ny = loc.y + yVec
 
             def locations = []
-
-//            println this
-//            println board
-//            println directionVectors
 
             while (new Location(x: nx, y: ny).isValid()) {
                 def field = board[nx, ny]
@@ -61,5 +55,5 @@ public abstract class Piece {
             }
             locations
         }.flatten() as Set<Location>
-    }
+    }.memoize()
 }
