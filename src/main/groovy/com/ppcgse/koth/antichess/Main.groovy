@@ -10,6 +10,6 @@ public class Main {
         println 'Running'
         new Runner().runGames();
 //
-//        new Game(new OnePlayBot(), new SacrificeBot()).run()
+//        new Game(new OnePlayBot(), new MyBot()).run()
     }
 }
