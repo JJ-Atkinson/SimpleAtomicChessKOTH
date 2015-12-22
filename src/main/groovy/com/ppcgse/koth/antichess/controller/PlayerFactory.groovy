@@ -1,9 +1,6 @@
 package com.ppcgse.koth.antichess.controller
 
-import com.ppcgse.koth.antichess.player.MeasureBot
-import com.ppcgse.koth.antichess.player.OnePlayBot
-import com.ppcgse.koth.antichess.player.RandomBot
-import com.ppcgse.koth.antichess.player.SacrificeBot
+import com.ppcgse.koth.antichess.player.*
 
 import java.util.function.Supplier
 
@@ -17,6 +14,7 @@ public class PlayerFactory {
                 put(OnePlayBot.class, { new OnePlayBot() })
                 put(SacrificeBot.class, { new SacrificeBot() } )
                 put(MeasureBot.class, { new MeasureBot() })
+                put(SearchBot.class, { new SearchBot() })
 //                put(YourBot.class, { new YourBot() } )
             }};
 
