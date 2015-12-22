@@ -27,7 +27,7 @@ public abstract class Piece {
 
     public abstract Set<Location> getValidDestinationSet(Board board);
 
-    protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
+    protected def genValidDests = { Board board, List<List<Integer>> directionVectors ->
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -55,5 +55,5 @@ public abstract class Piece {
             }
             locations
         }.flatten() as Set<Location>
-    }
+    }.memoize()
 }
