@@ -1,8 +1,8 @@
 package com.ppcgse.koth.antichess.controller
 
-import groovy.transform.AutoClone
-import groovy.transform.AutoCloneStyle
+import com.ppcgse.koth.antichess.pieces.*
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.Immutable
 import groovy.transform.ToString
 
 /**
@@ -10,20 +10,10 @@ import groovy.transform.ToString
  */
 @EqualsAndHashCode
 @ToString(includePackage = false)
-@AutoClone(style = AutoCloneStyle.COPY_CONSTRUCTOR)
+@Immutable(knownImmutableClasses = [Knight, Bishop, King, Pawn, Queen, Rook, Piece])
 class Field {
-    final Location loc
+    Location loc
     Piece piece
-
-    public Field(Field other) {
-        this.loc = other.loc
-        piece = other.piece?.clone()
-    }
-
-    public Field(Location loc) {
-        this.loc = loc
-        this.piece = null
-    }
 
     public boolean hasPiece() {return piece != null}
 }
