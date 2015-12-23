@@ -113,15 +113,28 @@ public class Board {
     }
 
     static public boolean isInCheck(Player player, Player enemy, Board board) {
-
+        return movesThatCauseCheck(player, enemy, board).size() > 0
     }
 
     static public Set<Move> movesThatCauseCheck(Player player, Player enemy, Board board) {
+        def king = player.getPieces(board).find {it.type == PieceType.KING}
+        def otherPlayerMoves =
+                enemy.getPieces(board)
+                        .collect {it.getValidDestinationSet(board)}
+                        .flatten() as Set<Move>
 
+        return otherPlayerMoves.findAll {it.destination == king.loc}
     }
 
-    static public Set<Move> isCheckmate(Player player, Player enemy, Board board) {
-
+    static public boolean isCheckmate(Player player, Player enemy, Board board) {
+        def king = player.getPieces(board).find {it.type == PieceType.KING}
+        def otherPlayerMoves = (enemy.getPieces(board)
+                                    .collect {it.getValidDestinationSet(board)}
+                                    .flatten() as Set<Move>)
+                                    .collect {it.destination}
+        def kingMoves = king.getValidDestinationSet(board)
+                                    .findAll {isValidMove(new Move(king, it), board)}
+        return otherPlayerMoves.collect {kingMoves}
     }
 
 

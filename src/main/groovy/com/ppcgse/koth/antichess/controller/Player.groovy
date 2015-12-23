@@ -8,12 +8,12 @@ public abstract class Player {
     private boolean disqualified = false;
     public PieceUpgradeType pieceUpgradeType;
 
-    public final List<Piece> getPieces(Board board) {
+    public final def getPieces = {Board board ->// TODO: don't forget to mention this in the challenge
         (board.fields
                 .values() as List<Field>)
                 .collect {Field f -> f.piece}
                 .findAll {Piece p -> p?.team == team}
-    }
+    }.memoize()
 
     final void setTeam(Color team) {
         this.team = team;
