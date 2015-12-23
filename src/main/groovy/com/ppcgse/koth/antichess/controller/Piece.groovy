@@ -7,11 +7,13 @@ import groovy.transform.ToString
 @EqualsAndHashCode
 public abstract class Piece {
     final Color team;
+    final boolean canBeKilledByExplosion;
 
-    Piece(Color team, PieceType type, Location loc) {
+    Piece(Color team, PieceType type, Location loc, boolean canBeKilledByExplosion) {
         this.team = team
         this.type = type
         this.loc = loc
+        this.canBeKilledByExplosion = canBeKilledByExplosion
     }
 
 
@@ -25,6 +27,13 @@ public abstract class Piece {
         return field.piece?.team != this.team
     }
 
+    /**
+     * This returns all valid locations for the board. This does NOT take into account
+     * invalid moves (e.g. killing that pawn next to the his king)
+     * @param board
+     * @param directionVectors
+     * @return
+     */
     public abstract Set<Location> getValidDestinationSet(Board board);
 
     protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
