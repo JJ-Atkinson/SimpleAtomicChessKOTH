@@ -50,17 +50,16 @@ public class Board {
                             PieceFactory.buildPiece(baseOrder[i], Color.WHITE, locations.veryBottom)))
             ret.put(locations.bottom,
                     new Field(locations.bottom,
-                            PieceFactory.buildPiece(Pawn.class, Color.WHITE, locations.bottom)))
+                            PieceFactory.buildPiece(Pawn.class,   Color.WHITE, locations.bottom)))
             ret.put(locations.top,
                     new Field(locations.top,
-                            PieceFactory.buildPiece(Pawn.class, Color.BLACK, locations.top)))
+                            PieceFactory.buildPiece(Pawn.class,   Color.BLACK, locations.top)))
             ret.put(locations.veryTop,
                     new Field(locations.veryTop,
                             PieceFactory.buildPiece(baseOrder[i], Color.BLACK, locations.veryTop)))
         }
         ret
     }
-
 
     //returns whether a piece got captured
     public Board movePiece(Player player, Move move) {
@@ -87,6 +86,42 @@ public class Board {
         newFields[oldLoc] = new Field(oldLoc, null);
 
         new Board(newFields)
+    }
+
+
+    static public Set<Location> getExplosionLocations(Location center) {
+        return [-1..1, -1..1]
+                .combinations()
+                .collect {new Location(it[0], int[1])}
+                .findAll {it.isValid()}
+    }
+
+    /**
+     * Prevent killing your king
+     * @param move
+     * @param board
+     * @return
+     */
+    static public boolean isValidMove(Move move, Board board) {
+        def dest = move.destination
+        def piece = move.piece
+        def pieceTeam = piece.team
+        def piecesDestroyed = getExplosionLocations(dest)
+                                .collect {board[it].piece}
+                                .findAll {it != null && it.canBeKilledByExplosion}
+        return piecesDestroyed.find {it.type == PieceType.KING && it.team != pieceTeam}
+    }
+
+    static public boolean isInCheck(Player player, Board board) {
+
+    }
+
+    static public Set<Move> movesThatCauseCheck(Player player, Player enemy, Board board) {
+
+    }
+
+    static public Set<Move> isCheckmate(Player player, Player enemy, Board board) {
+
     }
 
 
