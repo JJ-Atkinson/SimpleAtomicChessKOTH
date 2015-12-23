@@ -112,7 +112,7 @@ public class Board {
         return piecesDestroyed.find {it.type == PieceType.KING && it.team != pieceTeam}
     }
 
-    static public boolean isInCheck(Player player, Board board) {
+    static public boolean isInCheck(Player player, Player enemy, Board board) {
 
     }
 

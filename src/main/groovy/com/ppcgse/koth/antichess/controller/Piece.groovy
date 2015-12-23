@@ -7,6 +7,8 @@ import groovy.transform.ToString
 @EqualsAndHashCode
 public abstract class Piece {
     final Color team;
+    final PieceType type;
+    final Location loc;
     final boolean canBeKilledByExplosion;
 
     Piece(Color team, PieceType type, Location loc, boolean canBeKilledByExplosion) {
@@ -17,15 +19,13 @@ public abstract class Piece {
     }
 
 
-    final PieceType type;
-    final Location loc;
 
     protected def isValidMove = { Board board, Location test ->
         if (!test.isValid() || test == loc)
             return false
         def field = board[test]
         return field.piece?.team != this.team
-    }
+    }.memoize()
 
     /**
      * This returns all valid locations for the board. This does NOT take into account
@@ -37,7 +37,7 @@ public abstract class Piece {
      */
     public abstract Set<Location> getValidDestinationSet(Board board);
 
-    protected Set<Location> genValidDests(Board board, List<List<Integer>> directionVectors) {
+    protected def genValidDests = {Board board, List<List<Integer>> directionVectors ->
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -65,5 +65,5 @@ public abstract class Piece {
             }
             locations
         }.flatten() as Set<Location>
-    }
+    }.memoize()
 }
