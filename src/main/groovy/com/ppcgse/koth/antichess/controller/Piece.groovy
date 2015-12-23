@@ -29,7 +29,8 @@ public abstract class Piece {
 
     /**
      * This returns all valid locations for the board. This does NOT take into account
-     * invalid moves (e.g. killing that pawn next to the his king)
+     * invalid moves (e.g. killing that pawn next to the his king). It does however
+     * take into account that it can't jump over its own pieces...
      * @param board
      * @param directionVectors
      * @return

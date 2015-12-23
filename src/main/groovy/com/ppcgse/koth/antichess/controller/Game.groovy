@@ -131,33 +131,22 @@ public class Game {
 
     private Set<Move> genValidMoves(Player player, Player enemy) {
         def allMoves = player.getPieces(board).collect { [it, it.getValidDestinationSet(board)] }
-        def attackMoves = allMoves
-                .collect { pair ->
-            def piece = pair[0]
-            def dests = pair[1]
-            [piece, dests.findAll { board.getFieldAtLoc(it as Location)?.piece?.team == enemy.team }]
-        }.findAll { it[1] }
 
-        if (attackMoves.isEmpty())
-            return allMoves.collect {
-                Piece piece = it[0] as Piece
-                return it[1].collect { loc -> new Move(piece, loc as Location) }
-            }.flatten() as Set<Move>
-        else
-            return attackMoves.collect {
-                Piece piece = it[0] as Piece
-                return it[1].collect { loc -> new Move(piece, loc as Location) }
-            }.flatten() as Set<Move>
+        def otherPlayerMoves = enemy.getPieces(board).collect { [it, it.getValidDestinationSet(board)] }
+
+
+        return allMoves.findAll {Board.isValidMove(it, board)}
     }
 
+
     public boolean gameOver() {
-        for (Player player : players) {
-            if (player.isDisqualified() || player.getPieces(board).isEmpty() ||
-                    turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) {
-                return true;
-            }
-        }
-        return false;
+        if (turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) return true
+
+        return players.collect {
+                                it.getPieces(board)
+                                        .find {it.type == PieceType.KING}
+                               }.findAll()
+                               .size() == 2
     }
 
     def debugPrint(String out) {
