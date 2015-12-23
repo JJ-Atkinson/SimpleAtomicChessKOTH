@@ -102,38 +102,38 @@ public class Board {
      * @param board
      * @return
      */
-    static public boolean isValidMove(Move move, Board board) {
+    public boolean isValidMove(Move move) {
         def dest = move.destination
         def piece = move.piece
         def pieceTeam = piece.team
         def piecesDestroyed = getExplosionLocations(dest)
-                                .collect {board[it].piece}
+                                .collect {this[it].piece}
                                 .findAll {it != null && it.canBeKilledByExplosion}
         return piecesDestroyed.find {it.type == PieceType.KING && it.team != pieceTeam}
     }
 
-    static public boolean isInCheck(Player player, Player enemy, Board board) {
-        return movesThatCauseCheck(player, enemy, board).size() > 0
+    public boolean isInCheck(Player player, Player enemy) {
+        return movesThatCauseCheck(player, enemy).size() > 0
     }
 
-    static public Set<Move> movesThatCauseCheck(Player player, Player enemy, Board board) {
-        def king = player.getPieces(board).find {it.type == PieceType.KING}
+    public Set<Move> movesThatCauseCheck(Player player, Player enemy) {
+        def king = player.getPieces(this).find {it.type == PieceType.KING}
         def otherPlayerMoves =
-                enemy.getPieces(board)
-                        .collect {it.getValidDestinationSet(board)}
+                enemy.getPieces(this)
+                        .collect {it.getValidDestinationSet(this)}
                         .flatten() as Set<Move>
 
         return otherPlayerMoves.findAll {it.destination == king.loc}
     }
 
-    static public boolean isCheckmate(Player player, Player enemy, Board board) {
-        def king = player.getPieces(board).find {it.type == PieceType.KING}
-        def otherPlayerMoves = (enemy.getPieces(board)
-                                    .collect {it.getValidDestinationSet(board)}
+    public boolean isCheckmate(Player player, Player enemy) {
+        def king = player.getPieces(this).find {it.type == PieceType.KING}
+        def otherPlayerMoves = (enemy.getPieces(this)
+                                    .collect {it.getValidDestinationSet(this)}
                                     .flatten() as Set<Move>)
                                     .collect {it.destination}
-        def kingMoves = king.getValidDestinationSet(board)
-                                    .findAll {isValidMove(new Move(king, it), board)}
+        def kingMoves = king.getValidDestinationSet(this)
+                                    .findAll {isValidMove(new Move(king, it))}
         return otherPlayerMoves.collect {kingMoves}
     }
 
