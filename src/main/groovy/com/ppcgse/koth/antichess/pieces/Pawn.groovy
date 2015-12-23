@@ -9,7 +9,7 @@ import groovy.transform.TupleConstructor
 public class Pawn extends Piece {
 
     public Pawn(Color team, Location loc) {
-        super(team, PieceType.PAWN, loc);
+        super(team, PieceType.PAWN, loc, false);
     }
 
     @Override

@@ -9,7 +9,7 @@ import groovy.transform.TupleConstructor
 public class Bishop extends Piece {
 
     Bishop(Color team, Location loc) {
-        super(team, PieceType.BISHOP, loc)
+        super(team, PieceType.BISHOP, loc, true)
     }
 
     @Override

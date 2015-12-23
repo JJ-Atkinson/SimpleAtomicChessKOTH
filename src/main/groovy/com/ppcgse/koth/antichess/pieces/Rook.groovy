@@ -9,7 +9,7 @@ import groovy.transform.TupleConstructor
 public class Rook extends Piece {
 
     Rook(Color team, Location loc) {
-        super(team, PieceType.ROOK, loc)
+        super(team, PieceType.ROOK, loc, true)
     }
 
     @Override
