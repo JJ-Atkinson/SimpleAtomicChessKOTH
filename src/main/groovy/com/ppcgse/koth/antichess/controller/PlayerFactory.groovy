@@ -12,9 +12,6 @@ public class PlayerFactory {
             new HashMap<Class<? extends Player>, Supplier<Player>>() {{
                 put(RandomBot.class, { new RandomBot() })
                 put(OnePlayBot.class, { new OnePlayBot() })
-                put(SacrificeBot.class, { new SacrificeBot() } )
-                put(MeasureBot.class, { new MeasureBot() })
-                put(SearchBot.class, { new SearchBot() })
 //                put(YourBot.class, { new YourBot() } )
             }};
 
