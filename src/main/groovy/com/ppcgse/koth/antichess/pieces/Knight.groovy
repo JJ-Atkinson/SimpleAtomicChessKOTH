@@ -13,7 +13,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Set<Location> getValidDestinationSet(Board board) {
+    public Set<Location> getValidLocations(Board board) {
         def dirVectors = [[2, 1],   [2, -1],  // left
                           [-1, 2],  [1, 2],   // up
                           [-2, -1], [-2, 1],  // right
@@ -21,6 +21,6 @@ public class Knight extends Piece {
         return dirVectors
                 .collect {
                     loc.plus(it[0], it[1])
-                }.findAll(isValidMove.curry(board))
+                }.findAll {isValidMove(board, it)}
     }
 }

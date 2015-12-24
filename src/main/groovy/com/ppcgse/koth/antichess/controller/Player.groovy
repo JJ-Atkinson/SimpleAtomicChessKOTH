@@ -1,6 +1,7 @@
 package com.ppcgse.koth.antichess.controller
 
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.Memoized
 
 @EqualsAndHashCode
 public abstract class Player {
@@ -8,12 +9,13 @@ public abstract class Player {
     private boolean disqualified = false;
     public PieceUpgradeType pieceUpgradeType;
 
-    public final def getPieces = {Board board ->// TODO: don't forget to mention this in the challenge
+    @Memoized
+    public final def getPieces(Board board) {
         (board.fields
                 .values() as List<Field>)
                 .collect {Field f -> f.piece}
                 .findAll {Piece p -> p?.team == team}
-    }.memoize()
+    }
 
     final void setTeam(Color team) {
         this.team = team;

@@ -79,7 +79,7 @@ public class Game {
     private boolean makeTurn(Player player, Player enemy) {
         try {
             long start = System.currentTimeMillis();
-            def validMoves = genValidMoves(player, enemy)
+            def validMoves = board.genValidMoves(player, enemy)
             if (!validMoves) return false
             debugPrint "${player.team}s turn."
             debugPrint "validMoves: $validMoves"
@@ -129,33 +129,14 @@ public class Game {
     }
 
 
-    private Set<Move> genValidMoves(Player player, Player enemy) {
-        def allMoves = player.getPieces(board).collect { [it, it.getValidDestinationSet(board)] }
-        def otherPlayerMoves = enemy.getPieces(board)
-                                    .collect { [it, it.getValidDestinationSet(board)] }
-        def otherPlayerDestSet = otherPlayerMoves
-                                    .collect {it[1]}
-                                    .flatten() as Set<Location>
-        def king = player.getPieces(board).find {it.type == PieceType.KING}
-
-        if (board.isInCheck(player, enemy))
-            return king.getValidDestinationSet(board)
-                            .findAll {!otherPlayerDestSet.contains(it)}
-                            .collect {new Move(king, it)}
-        else
-            return allMoves.findAll {board.isValidMove(it)}
-                            .collect {new Move(it[0], it[1])}
-    }
-
-
     public boolean gameOver() {
         if (turnsWithoutCaptures >= MAX_TURNS_WITHOUT_CAPTURES) return true
-
-        return (players.collect {
+        def kings = players.collect {
                                 it.getPieces(board)
                                         .find {it.type == PieceType.KING}
-                               }.findAll()
-                               .size() == 2
+                            }.findAll()
+
+        return (kings.size() != 2
                || board.isCheckmate(players[0], players[1])
                || board.isCheckmate(players[1], players[0]))
     }

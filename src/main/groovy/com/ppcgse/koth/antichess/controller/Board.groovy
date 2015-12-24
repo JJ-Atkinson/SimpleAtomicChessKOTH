@@ -8,7 +8,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 public class Board {
     public static final int BOARD_LENGTH = 8;
-    public static boolean USE_UTF8_TO_STRING = true
+    public static boolean USE_UTF8_TO_STRING = false
 
     private final Map<Location, Field> fields
 
@@ -76,9 +76,9 @@ public class Board {
                 .findAll { it?.canBeKilledByExplosion }
                 .plus(piece)
 
-        if (!deadPieces) {
-            // upgrade pawn
-            if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
+        if (this[dest].piece == null) {
+            // check for pawn upgrade
+            if (piece.type == PieceType.PAWN && isHomeRow(dest)) {
                 if (player.pieceUpgradeType == null)
                     throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
                 def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
@@ -91,6 +91,7 @@ public class Board {
             deadPieces.each {
                 newFields[it.loc] = new Field(it.loc, null)
             }
+
         }
 
         //remove piece on old field
@@ -103,12 +104,12 @@ public class Board {
     static public Set<Location> getExplosionLocations(Location center) {
         return [-1..1, -1..1]
                 .combinations()
-                .collect { new Location(it[0], int[1]) }
+                .collect { center.plus(it[0], it[1]) }
                 .findAll { it.isValid() }
     }
 
     /**
-     * Prevent killing your king
+     * Prevent killing your king (that would be bad)
      * @param move
      * @param board
      * @return
@@ -120,19 +121,24 @@ public class Board {
         def piecesDestroyed = getExplosionLocations(dest)
                 .collect { this[it].piece }
                 .findAll { it != null && it.canBeKilledByExplosion }
-        return piecesDestroyed.find { it.type == PieceType.KING && it.team != pieceTeam }
+        if (this[dest].piece?.team == pieceTeam.opposite())
+            return piecesDestroyed.find { it.type == PieceType.KING && it.team == pieceTeam } == null
+        else
+            return true
     }
 
     public boolean isInCheck(Player player, Player enemy) {
         return movesThatCauseCheck(player, enemy).size() > 0
     }
 
-    public Set<Move> movesThatCauseCheck(Player player, Player enemy) {
+    public List<Move> movesThatCauseCheck(Player player, Player enemy) {
         def king = player.getPieces(this).find { it.type == PieceType.KING }
         def otherPlayerMoves =
                 enemy.getPieces(this)
-                        .collect { it.getValidDestinationSet(this) }
-                        .flatten() as Set<Move>
+                        .collect {
+                            it.getValidLocations(this).collect { loc -> new Move(it, loc)}
+                        }
+                        .flatten() as List<Move>
 
         return otherPlayerMoves.findAll { it.destination == king.loc }
     }
@@ -140,12 +146,29 @@ public class Board {
     public boolean isCheckmate(Player player, Player enemy) {
         def king = player.getPieces(this).find { it.type == PieceType.KING }
         def otherPlayerMoves = (enemy.getPieces(this)
-                .collect { it.getValidDestinationSet(this) }
-                .flatten() as Set<Move>)
-                .collect { it.destination }
-        def kingMoves = king.getValidDestinationSet(this)
+                .collect { it.getValidLocations(this) }
+                .flatten() as List<Location>)
+        def kingMoves = king.getValidLocations(this)
                 .findAll { isValidMove(new Move(king, it)) }
-        return otherPlayerMoves.collect { kingMoves }
+        return otherPlayerMoves
+                .collect { kingMoves.contains(it) }
+                .inject { acc, it -> acc && it }
+    }
+
+    public Set<Move> genValidMoves(Player player, Player enemy) {
+        def allMoves = player.getPieces(this)
+                .collect { it.getValidMoves(this) }
+                .flatten() as List<Move>
+        def otherPlayerDests = enemy.getPieces(this)
+                .collect {it.getValidLocations(this)}
+                .flatten() as List<Location>
+        def king = player.getPieces(this).find {it.type == PieceType.KING}
+
+        if (isInCheck(player, enemy))
+            return king.getValidMoves(this)
+                    .findAll {!otherPlayerDests.contains(it.destination)}
+        else
+            return allMoves.findAll {isValidMove(it)}
     }
 
 
@@ -162,6 +185,8 @@ public class Board {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
+        (0..7).each { builder.append(it) }
+        builder.append('\n')
         for (int j = BOARD_LENGTH - 1; j >= 0; j--) {
             for (int i = 0; i < BOARD_LENGTH; i++) {
                 def color = this[i, j].piece?.team//?.opposite() //<- use if you have a dark console
@@ -170,7 +195,7 @@ public class Board {
                         (this[i, j].piece?.type?.getShortStr() ?: '-')
                 builder.append(color == Color.BLACK ? out : out.toLowerCase());
             }
-            builder.append("\n");
+            builder.append(" $j\n");
         }
         return builder.toString();
     }

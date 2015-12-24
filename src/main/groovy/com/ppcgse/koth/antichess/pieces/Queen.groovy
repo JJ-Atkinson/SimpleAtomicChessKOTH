@@ -13,7 +13,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public Set<Location> getValidDestinationSet(Board board) {
+    public Set<Location> getValidLocations(Board board) {
         genValidDests(board, [-1..1, -1..1]
                                 .combinations()
                                 .findAll { it != [0, 0] }

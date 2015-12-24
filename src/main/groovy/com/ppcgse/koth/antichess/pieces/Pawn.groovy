@@ -13,7 +13,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public Set<Location> getValidDestinationSet(Board board) {
+    public Set<Location> getValidLocations(Board board) {
         int direction = getTeam() == Color.WHITE ? 1 : -1;
 
         getAttackMoves(board, direction) + getForwardMoves(board, direction)

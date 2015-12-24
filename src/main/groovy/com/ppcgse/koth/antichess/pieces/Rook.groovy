@@ -13,7 +13,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Set<Location> getValidDestinationSet(Board board) {
+    public Set<Location> getValidLocations(Board board) {
         genValidDests(board, [[1, 0], [0, 1], [-1, 0], [0, -1]])
     }
 }

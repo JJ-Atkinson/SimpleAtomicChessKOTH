@@ -1,6 +1,7 @@
 package com.ppcgse.koth.antichess.controller
 
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.Memoized
 import groovy.transform.ToString
 
 @ToString(includeFields = true, excludes = ['metaClass', 'isValidMove'], includePackage = false)
@@ -19,13 +20,13 @@ public abstract class Piece {
     }
 
 
-
-    protected def isValidMove = { Board board, Location test ->
+    @Memoized
+    protected final def isValidMove(Board board, Location test) {
         if (!test.isValid() || test == loc)
             return false
         def field = board[test]
         return field.piece?.team != this.team
-    }.memoize()
+    }
 
     /**
      * This returns all valid locations for the board. This does NOT take into account
@@ -35,9 +36,14 @@ public abstract class Piece {
      * @param directionVectors
      * @return
      */
-    public abstract Set<Location> getValidDestinationSet(Board board);
+    public abstract Set<Location> getValidLocations(Board board);
 
-    protected def genValidDests = {Board board, List<List<Integer>> directionVectors ->
+    public Set<Move> getValidMoves(Board board) {
+        return getValidLocations(board).collect {new Move(this, it)}
+    }
+
+    @Memoized
+    protected def genValidDests(Board board, List<List<Integer>> directionVectors) {
         directionVectors.collect {
             def xVec = it[0]
             def yVec = it[1]
@@ -65,5 +71,5 @@ public abstract class Piece {
             }
             locations
         }.flatten() as Set<Location>
-    }.memoize()
+    }
 }
