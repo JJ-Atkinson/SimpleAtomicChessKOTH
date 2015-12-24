@@ -8,7 +8,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 public class Board {
     public static final int BOARD_LENGTH = 8;
-    public static boolean USE_UTF8_TO_STRING = false
+    public static boolean USE_UTF8_TO_STRING = true
 
     private final Map<Location, Field> fields
 
@@ -50,10 +50,10 @@ public class Board {
                             PieceFactory.buildPiece(baseOrder[i], Color.WHITE, locations.veryBottom)))
             ret.put(locations.bottom,
                     new Field(locations.bottom,
-                            PieceFactory.buildPiece(Pawn.class,   Color.WHITE, locations.bottom)))
+                            PieceFactory.buildPiece(Pawn.class, Color.WHITE, locations.bottom)))
             ret.put(locations.top,
                     new Field(locations.top,
-                            PieceFactory.buildPiece(Pawn.class,   Color.BLACK, locations.top)))
+                            PieceFactory.buildPiece(Pawn.class, Color.BLACK, locations.top)))
             ret.put(locations.veryTop,
                     new Field(locations.veryTop,
                             PieceFactory.buildPiece(baseOrder[i], Color.BLACK, locations.veryTop)))
@@ -71,16 +71,27 @@ public class Board {
         if (!dest.isValid())
             return this
 
-        // upgrade pawn
-        if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
-            if (player.pieceUpgradeType == null)
-                throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
-            def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
-            newFields[dest] = new Field(dest, newPiece);
-        } else
-            newFields[dest] = new Field(dest,
-                    PieceFactory.buildPiece(piece.getClass() as Class<? extends Piece>,
-                            piece.team, dest))
+        def deadPieces = getExplosionLocations(dest)
+                .collect { this[it].piece }
+                .findAll { it?.canBeKilledByExplosion }
+                .plus(piece)
+
+        if (!deadPieces) {
+            // upgrade pawn
+            if (piece.getType() == PieceType.PAWN && isHomeRow(dest)) {
+                if (player.pieceUpgradeType == null)
+                    throw new IllegalStateException("Unable to upgrade piece with Player#pieceUpgradeType undefined")
+                def newPiece = PieceFactory.buildPiece(player.pieceUpgradeType.clazz, piece.team, dest)
+                newFields[dest] = new Field(dest, newPiece);
+            } else
+                newFields[dest] = new Field(dest,
+                        PieceFactory.buildPiece(piece.getClass() as Class<? extends Piece>,
+                                piece.team, dest))
+        } else {
+            deadPieces.each {
+                newFields[it.loc] = new Field(it.loc, null)
+            }
+        }
 
         //remove piece on old field
         newFields[oldLoc] = new Field(oldLoc, null);
@@ -92,8 +103,8 @@ public class Board {
     static public Set<Location> getExplosionLocations(Location center) {
         return [-1..1, -1..1]
                 .combinations()
-                .collect {new Location(it[0], int[1])}
-                .findAll {it.isValid()}
+                .collect { new Location(it[0], int[1]) }
+                .findAll { it.isValid() }
     }
 
     /**
@@ -107,9 +118,9 @@ public class Board {
         def piece = move.piece
         def pieceTeam = piece.team
         def piecesDestroyed = getExplosionLocations(dest)
-                                .collect {this[it].piece}
-                                .findAll {it != null && it.canBeKilledByExplosion}
-        return piecesDestroyed.find {it.type == PieceType.KING && it.team != pieceTeam}
+                .collect { this[it].piece }
+                .findAll { it != null && it.canBeKilledByExplosion }
+        return piecesDestroyed.find { it.type == PieceType.KING && it.team != pieceTeam }
     }
 
     public boolean isInCheck(Player player, Player enemy) {
@@ -117,24 +128,24 @@ public class Board {
     }
 
     public Set<Move> movesThatCauseCheck(Player player, Player enemy) {
-        def king = player.getPieces(this).find {it.type == PieceType.KING}
+        def king = player.getPieces(this).find { it.type == PieceType.KING }
         def otherPlayerMoves =
                 enemy.getPieces(this)
-                        .collect {it.getValidDestinationSet(this)}
+                        .collect { it.getValidDestinationSet(this) }
                         .flatten() as Set<Move>
 
-        return otherPlayerMoves.findAll {it.destination == king.loc}
+        return otherPlayerMoves.findAll { it.destination == king.loc }
     }
 
     public boolean isCheckmate(Player player, Player enemy) {
-        def king = player.getPieces(this).find {it.type == PieceType.KING}
+        def king = player.getPieces(this).find { it.type == PieceType.KING }
         def otherPlayerMoves = (enemy.getPieces(this)
-                                    .collect {it.getValidDestinationSet(this)}
-                                    .flatten() as Set<Move>)
-                                    .collect {it.destination}
+                .collect { it.getValidDestinationSet(this) }
+                .flatten() as Set<Move>)
+                .collect { it.destination }
         def kingMoves = king.getValidDestinationSet(this)
-                                    .findAll {isValidMove(new Move(king, it))}
-        return otherPlayerMoves.collect {kingMoves}
+                .findAll { isValidMove(new Move(king, it)) }
+        return otherPlayerMoves.collect { kingMoves }
     }
 
 
