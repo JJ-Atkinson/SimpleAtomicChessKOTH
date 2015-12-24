@@ -3,7 +3,7 @@ package com.ppcgse.koth.antichess.controller
 import static com.ppcgse.koth.antichess.controller.GameResult.*
 
 public class Game {
-    public static boolean DEBUG = false
+    public static boolean DEBUG = true
     public static boolean SHOW_GAMES = true
     private static final int MAX_TURNS_WITHOUT_CAPTURES = 100; //=50, counts for both teams
     private static final int MAX_MILLISECONDS = 2000;
