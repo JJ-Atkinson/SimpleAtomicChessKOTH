@@ -13,10 +13,10 @@ public class King extends Piece {
     }
 
     @Override
-    public Set<Location> getValidDestinationSet(Board board) {
+    public Set<Location> getValidLocations(Board board) {
         ([-1..1, -1..1]
                 .combinations() as List<List<Integer>>)
                 .collect {loc.plus(it[0], it[1])}
-                .findAll (isValidMove.curry(board)) as Set<Location>
+                .findAll {isValidMove(board, it)}
     }
 }

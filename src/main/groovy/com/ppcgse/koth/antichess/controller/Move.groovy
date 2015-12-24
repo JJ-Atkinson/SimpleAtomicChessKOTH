@@ -26,7 +26,7 @@ class Move {
             return false;
         }
 
-        if (piece.getValidDestinationSet(board).contains(destination)) {
+        if (piece.getValidLocations(board).contains(destination)) {
             return true;
         }
         return false;
